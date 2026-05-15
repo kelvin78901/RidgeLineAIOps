@@ -1,0 +1,1092 @@
+{
+  "evaluated_at": "2026-05-12T20:08:03Z",
+  "provider": "anthropic",
+  "model": "claude-sonnet-4-6",
+  "n_replies": 20,
+  "rubric_ids": [
+    "orbit_casual",
+    "nimbus_formal"
+  ],
+  "evaluations": [
+    {
+      "reply_id": "R001",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I never received my order. It's been 8 days and the tracking hasn't updated.",
+      "agent_reply": "Thank you for bringing this to my attention, and I sincerely apologize for the inconvenience this delay has caused. I've located your order and confirmed the carrier mis-scanned the package \u2014 I've initiated a replacement shipment which will arrive within 2-3 business days via expedited delivery. I've also applied a 15% credit to your account for the inconvenience. Please don't hesitate to reach out if you have any further concerns.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Resolution details clear; timeline and credit info accurate"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Stiff corporate tone; missing casual energy, emojis, tone keywords"
+        },
+        "completeness": {
+          "score": 4,
+          "reason": "Acknowledges, resolves, and adds goodwill credit in one reply"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Resolves well but tone is too formal and corporate for Orbit Streetwear brand.",
+        "overall": 0.68
+      }
+    },
+    {
+      "reply_id": "R001",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I never received my order. It's been 8 days and the tracking hasn't updated.",
+      "agent_reply": "Thank you for bringing this to my attention, and I sincerely apologize for the inconvenience this delay has caused. I've located your order and confirmed the carrier mis-scanned the package \u2014 I've initiated a replacement shipment which will arrive within 2-3 business days via expedited delivery. I've also applied a 15% credit to your account for the inconvenience. Please don't hesitate to reach out if you have any further concerns.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Specific cause cited, replacement and credit clearly stated"
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Formal, empathetic, no forbidden words, tone keywords present"
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "All four required elements present and well-executed"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Exemplary response meeting all Nimbus Co. brand and content requirements.",
+        "overall": 0.97
+      }
+    },
+    {
+      "reply_id": "R002",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I never received my order. It's been 8 days and the tracking hasn't updated.",
+      "agent_reply": "Hey! So sorry about that \u2014 totally on us. Carrier scanned wrong, I just pushed a replacement with 2-day shipping and added 15% off your next one. You'll get a tracking update tonight \ud83d\ude4c",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Clear cause stated, concrete resolution with timeline given"
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Casual, warm, energetic; hits 'totally,' friendly sign-off emoji"
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "Acknowledgment, resolution, next steps, discount all covered"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Spot-on Orbit voice, fast resolution, all required elements nailed.",
+        "overall": 0.97
+      }
+    },
+    {
+      "reply_id": "R002",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I never received my order. It's been 8 days and the tracking hasn't updated.",
+      "agent_reply": "Hey! So sorry about that \u2014 totally on us. Carrier scanned wrong, I just pushed a replacement with 2-day shipping and added 15% off your next one. You'll get a tracking update tonight \ud83d\ude4c",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Resolution details present but unverified; timeline specifics seem reasonable"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual tone, slang-adjacent phrases, emoji; violates formal brand voice"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "Missing formal acknowledgment, offer for further assistance, and required tone keywords"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Overly casual reply violates multiple Nimbus Co. brand requirements; needs rewrite.",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R003",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Where is my refund?? You said 5 days and it's been 2 weeks.",
+      "agent_reply": "Done \u2014 refunded. Should show up soon.",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Refund confirmed but no timeline or details given"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Too terse; lacks warmth, energy, and friendly sign-off"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "Missing acknowledgment, timeframe, goodwill gesture, sign-off"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Too bare-bones; missing brand warmth, key details, and required elements.",
+        "overall": 0.41
+      }
+    },
+    {
+      "reply_id": "R003",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Where is my refund?? You said 5 days and it's been 2 weeks.",
+      "agent_reply": "Done \u2014 refunded. Should show up soon.",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Refund mentioned but no specific timeline given"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual, terse; lacks formal empathetic tone entirely"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing acknowledgment, ETA, and offer for further assistance"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Extremely brief and casual reply fails nearly all Nimbus Co. brand requirements.",
+        "overall": 0.32
+      }
+    },
+    {
+      "reply_id": "R004",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Where is my refund?? You said 5 days and it's been 2 weeks.",
+      "agent_reply": "I completely understand your frustration, and I apologize for the delay. I've just looked into your account and processed the refund manually \u2014 it will appear in your original payment method within 24-48 hours. I'm also adding a 20% courtesy credit to your account. If you don't see the refund by Friday, please reply to this email and I'll escalate immediately.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Refund processed, timeline clear, credit added; no errors detected"
+        },
+        "brand_voice": {
+          "score": 3,
+          "reason": "Warm but slightly formal; missing tone keywords like got you, no stress"
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "Acknowledgment, resolution, compensation, and follow-up path all included"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Solid resolution, slightly corporate tone, missing signature Orbit energy and friendly sign-off",
+        "overall": 0.79
+      }
+    },
+    {
+      "reply_id": "R004",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Where is my refund?? You said 5 days and it's been 2 weeks.",
+      "agent_reply": "I completely understand your frustration, and I apologize for the delay. I've just looked into your account and processed the refund manually \u2014 it will appear in your original payment method within 24-48 hours. I'm also adding a 20% courtesy credit to your account. If you don't see the refund by Friday, please reply to this email and I'll escalate immediately.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Specific timeline, clear actions, and escalation path all accurate."
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Formal, empathetic, professional; no forbidden words used."
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "Acknowledgment, resolution, timeline, and further assistance all present."
+        },
+        "sla": "pass",
+        "escalation": "pass",
+        "flag_for_review": false,
+        "summary": "Exemplary response meeting all brand requirements with clear, empathetic professionalism.",
+        "overall": 1.0
+      }
+    },
+    {
+      "reply_id": "R005",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "The product arrived broken. This is the second time.",
+      "agent_reply": "Per our return policy, please ship the item back at your expense and we will issue a refund within 14 business days of receipt of the aforementioned merchandise.",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 2,
+          "reason": "14-day timeline may be inaccurate; no resolution offered upfront"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Formal, cold; uses forbidden phrases 'per our' and 'aforementioned'"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "No acknowledgment, no friendly sign-off, no goodwill gesture"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Completely off-brand; uses forbidden language, no warmth or resolution offered",
+        "overall": 0.26
+      }
+    },
+    {
+      "reply_id": "R005",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "The product arrived broken. This is the second time.",
+      "agent_reply": "Per our return policy, please ship the item back at your expense and we will issue a refund within 14 business days of receipt of the aforementioned merchandise.",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Policy details stated but no verification of specifics provided"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "No empathy, acknowledgment, or warmth; tone is cold and bureaucratic"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "Missing acknowledgment, offer for further assistance, and empathetic opening"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Cold, incomplete response lacking required empathy, acknowledgment, and further assistance offer.",
+        "overall": 0.42
+      }
+    },
+    {
+      "reply_id": "R006",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "The product arrived broken. This is the second time.",
+      "agent_reply": "Oh no, two in a row?? Seriously sorry. Don't bother sending the broken one back \u2014 keep it or recycle it. I'm shipping a new one today and throwing in a free tee for the trouble. We got this. \ud83d\ude4c",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Resolution clear; shipping claim unverified but plausible"
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Casual, warm, energetic; perfect tone keywords and emoji use"
+        },
+        "completeness": {
+          "score": 4,
+          "reason": "Friendly sign-off present; no tracking info or timeline given"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Strong on-brand reply with fast resolution; minor detail gaps on shipping timeline",
+        "overall": 0.89
+      }
+    },
+    {
+      "reply_id": "R006",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "The product arrived broken. This is the second time.",
+      "agent_reply": "Oh no, two in a row?? Seriously sorry. Don't bother sending the broken one back \u2014 keep it or recycle it. I'm shipping a new one today and throwing in a free tee for the trouble. We got this. \ud83d\ude4c",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Resolution and shipping claim seem reasonable but unverified"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual, slangy tone violates formal brand voice entirely"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "No specific timeline/ETA, no offer for further assistance"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Overly casual reply violates brand voice; missing ETA and formal acknowledgment.",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R007",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I want to cancel my subscription.",
+      "agent_reply": "Yo dude, no worries, lmk if you change your mind \ud83d\udc4d",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 1,
+          "reason": "No issue addressed, no resolution provided, no context acknowledged"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Casual tone present but too vague and dismissive, lacks warmth"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing direct acknowledgment, resolution, and proper friendly sign-off"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Extremely incomplete reply; no resolution, no acknowledgment, fails brand standards entirely",
+        "overall": 0.29
+      }
+    },
+    {
+      "reply_id": "R007",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I want to cancel my subscription.",
+      "agent_reply": "Yo dude, no worries, lmk if you change your mind \ud83d\udc4d",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 1,
+          "reason": "No resolution, next steps, or timeline provided"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Multiple forbidden words: yo, dude, no worries; casual slang used"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing all four required elements entirely"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Completely violates brand rubric; forbidden language, no resolution or required elements present",
+        "overall": 0.22
+      }
+    },
+    {
+      "reply_id": "R008",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I want to cancel my subscription.",
+      "agent_reply": "I'm sorry to hear you'd like to cancel, and I appreciate you letting us know. I've processed the cancellation effective today \u2014 you won't be charged again, and you'll retain access through the end of your current billing period (ends Aug 14). If there's anything specific that drove your decision I'd love to hear it. Please don't hesitate to reach out if we can help in the future.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Cancellation details and billing period info appear accurate and clear"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Formal tone, no emojis, lacks casual energy; missing tone keywords"
+        },
+        "completeness": {
+          "score": 3,
+          "reason": "Acknowledges and resolves but no friendly sign-off or retention offer"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Accurate resolution but tone is too corporate and stiff for Orbit Streetwear brand",
+        "overall": 0.64
+      }
+    },
+    {
+      "reply_id": "R008",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I want to cancel my subscription.",
+      "agent_reply": "I'm sorry to hear you'd like to cancel, and I appreciate you letting us know. I've processed the cancellation effective today \u2014 you won't be charged again, and you'll retain access through the end of your current billing period (ends Aug 14). If there's anything specific that drove your decision I'd love to hear it. Please don't hesitate to reach out if we can help in the future.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Cancellation confirmed, billing end date specified, access retention explained."
+        },
+        "brand_voice": {
+          "score": 4,
+          "reason": "Mostly formal and empathetic; 'I'd love to hear it' slightly casual."
+        },
+        "completeness": {
+          "score": 4,
+          "reason": "Acknowledgment and next steps present; no explicit further-assistance offer beyond closing."
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Strong, professional cancellation response; minor tone and completeness gaps noted.",
+        "overall": 0.87
+      }
+    },
+    {
+      "reply_id": "R009",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Your app keeps crashing when I try to log in.",
+      "agent_reply": "We're aware of a login issue affecting some users and our engineering team is actively working on a fix. I've added you to our priority notification list \u2014 you'll receive an email the moment the fix is deployed (expected within 24 hours). As an interim workaround, please try logging in from the web portal at app.example.com. Apologies for the disruption.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Workaround provided but no direct resolution; 24hr fix unverified"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Formal, cold tone; missing casual energy, emojis, and tone keywords"
+        },
+        "completeness": {
+          "score": 3,
+          "reason": "Acknowledges issue and offers workaround but no friendly sign-off"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Too corporate and stiff; misses Orbit's casual, warm, energetic brand voice entirely",
+        "overall": 0.6
+      }
+    },
+    {
+      "reply_id": "R009",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Your app keeps crashing when I try to log in.",
+      "agent_reply": "We're aware of a login issue affecting some users and our engineering team is actively working on a fix. I've added you to our priority notification list \u2014 you'll receive an email the moment the fix is deployed (expected within 24 hours). As an interim workaround, please try logging in from the web portal at app.example.com. Apologies for the disruption.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Plausible details; no contradictions, though ETA unverifiable"
+        },
+        "brand_voice": {
+          "score": 3,
+          "reason": "Professional but lacks empathy acknowledgment and tone keywords"
+        },
+        "completeness": {
+          "score": 3,
+          "reason": "Missing explicit acknowledgment of frustration and further-assistance offer"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Functional reply but missing required empathy acknowledgment and closing assistance offer.",
+        "overall": 0.72
+      }
+    },
+    {
+      "reply_id": "R010",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Your app keeps crashing when I try to log in.",
+      "agent_reply": "have you tried turning it off and on again",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 1,
+          "reason": "No resolution, no acknowledgment, completely off-topic response"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Flippant, unhelpful, zero brand alignment or warmth"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing all required elements: acknowledgment, resolution, sign-off"
+        },
+        "sla": "fail",
+        "escalation": "fail",
+        "flag_for_review": true,
+        "summary": "Completely unacceptable reply; no resolution, wrong tone, needs immediate review.",
+        "overall": 0.15
+      }
+    },
+    {
+      "reply_id": "R010",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Your app keeps crashing when I try to log in.",
+      "agent_reply": "have you tried turning it off and on again",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 1,
+          "reason": "No acknowledgment, no solution, no context given"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual, dismissive, violates formal empathetic tone entirely"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing all four required elements completely"
+        },
+        "sla": "fail",
+        "escalation": "fail",
+        "flag_for_review": true,
+        "summary": "Completely unacceptable reply; violates every brand standard and required element.",
+        "overall": 0.15
+      }
+    },
+    {
+      "reply_id": "R011",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Can I get a discount? I've been a customer for 3 years.",
+      "agent_reply": "Hey, totally \u2014 three years is huge! Just dropped a 25% loyalty code in your account: LOYAL3YR. Valid for the next 30 days, stacks with sale items. Anything else I can do for you?",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Code details plausible but unverifiable without ticket context"
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Casual, warm, energetic; uses 'totally'; feels like a friend"
+        },
+        "completeness": {
+          "score": 4,
+          "reason": "Direct acknowledgment and resolution present; friendly sign-off included"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Strong on-brand reply; resolves fast with warmth and clear loyalty reward.",
+        "overall": 0.89
+      }
+    },
+    {
+      "reply_id": "R011",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Can I get a discount? I've been a customer for 3 years.",
+      "agent_reply": "Hey, totally \u2014 three years is huge! Just dropped a 25% loyalty code in your account: LOYAL3YR. Valid for the next 30 days, stacks with sale items. Anything else I can do for you?",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Code details seem plausible but unverified; stacking claim unconfirmed"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual slang, missing empathy, acknowledgment, and formal tone entirely"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "Missing acknowledgment, specific timeline context, and formal further-assistance offer"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Overly casual reply violates brand voice and omits multiple required elements.",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R012",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Can I get a discount? I've been a customer for 3 years.",
+      "agent_reply": "Discount codes are only available during promotional periods. Please subscribe to our newsletter to be notified.",
+      "intended_tier": "acceptable",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Technically plausible but lacks specifics or helpful context"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Cold, robotic, zero warmth or casual tone; no emojis or friendly language"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "No direct acknowledgment, no resolution, no friendly sign-off"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Tone-deaf, incomplete reply missing all brand voice and required elements.",
+        "overall": 0.34
+      }
+    },
+    {
+      "reply_id": "R012",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Can I get a discount? I've been a customer for 3 years.",
+      "agent_reply": "Discount codes are only available during promotional periods. Please subscribe to our newsletter to be notified.",
+      "intended_tier": "acceptable",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Information seems plausible but unverified against specific policy"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Lacks empathy, acknowledgment, and formal warm tone required"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing acknowledgment, timeline, and offer for further assistance"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Reply is too terse, missing required elements and empathetic brand voice entirely.",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R013",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I was charged twice for the same order.",
+      "agent_reply": "Thank you for catching that, and I apologize for the billing error. I've confirmed the duplicate charge and processed a refund for the second transaction \u2014 it will appear in your account within 3-5 business days. I've also flagged this with our payments team to investigate the cause. Is there anything else I can help with?",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Refund confirmed, timeline given, escalation to payments team noted"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Formal tone, missing casual energy, warmth, and tone keywords"
+        },
+        "completeness": {
+          "score": 4,
+          "reason": "Acknowledged issue, refunded, escalated, invited follow-up"
+        },
+        "sla": "pass",
+        "escalation": "pass",
+        "flag_for_review": true,
+        "summary": "Accurate resolution but too corporate; lacks Orbit's casual, energetic brand voice.",
+        "overall": 0.71
+      }
+    },
+    {
+      "reply_id": "R013",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I was charged twice for the same order.",
+      "agent_reply": "Thank you for catching that, and I apologize for the billing error. I've confirmed the duplicate charge and processed a refund for the second transaction \u2014 it will appear in your account within 3-5 business days. I've also flagged this with our payments team to investigate the cause. Is there anything else I can help with?",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Confirms duplicate charge, refund processed, payments team notified\u2014all accurate."
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Formal, empathetic, professional; no forbidden words used."
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "Acknowledgment, resolution, 3-5 day timeline, and further assistance all present."
+        },
+        "sla": "pass",
+        "escalation": "pass",
+        "flag_for_review": false,
+        "summary": "Exemplary reply: meets all required elements with proper tone and professionalism.",
+        "overall": 1.0
+      }
+    },
+    {
+      "reply_id": "R014",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I was charged twice for the same order.",
+      "agent_reply": "ok refunding now",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Refund stated but no confirmation details or timeline given"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Too terse; missing warmth, emojis, tone keywords, friendly sign-off"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing acknowledgment, refund timeline, goodwill gesture, sign-off"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Bare-minimum reply missing nearly all required brand elements and resolution details",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R014",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I was charged twice for the same order.",
+      "agent_reply": "ok refunding now",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 2,
+          "reason": "Refund action implied but no confirmation or details given"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual, terse, missing formality, empathy, and required tone keywords"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing acknowledgment, timeline, ETA, and offer for further assistance"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Extremely poor response; missing nearly all required elements and brand standards",
+        "overall": 0.27
+      }
+    },
+    {
+      "reply_id": "R015",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I need to change my shipping address \u2014 my order ships tomorrow.",
+      "agent_reply": "Hey, got you! I caught it in time \u2014 address is updated to the new one. Order will ship to that address tomorrow as planned. You're good \ud83d\ude80",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Clear confirmation of address update and shipping timeline"
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Casual, warm, uses 'got you', emoji, very on-brand"
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "Direct acknowledgment, resolution, reassurance all present"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Spot-on Orbit voice, fast resolution, all required elements nailed.",
+        "overall": 0.97
+      }
+    },
+    {
+      "reply_id": "R015",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I need to change my shipping address \u2014 my order ships tomorrow.",
+      "agent_reply": "Hey, got you! I caught it in time \u2014 address is updated to the new one. Order will ship to that address tomorrow as planned. You're good \ud83d\ude80",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Resolution seems correct but lacks confirmation details"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual slang, emoji, not formal or empathetic tone"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "Missing acknowledgment, specific timeline, and further assistance offer"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Overly casual reply missing required brand elements; needs rewrite for Nimbus Co. standards",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R016",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I need to change my shipping address \u2014 my order ships tomorrow.",
+      "agent_reply": "Kindly note that per our policy, address changes cannot be processed once an order has been confirmed. We regret to inform you that we are unable to assist with this request.",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 2,
+          "reason": "No resolution offered, just a flat refusal with no alternatives"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Uses three forbidden phrases; cold, corporate, zero warmth"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "No direct acknowledgment, no resolution, no friendly sign-off"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Violates brand voice entirely; forbidden phrases used; no resolution or warmth offered",
+        "overall": 0.26
+      }
+    },
+    {
+      "reply_id": "R016",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I need to change my shipping address \u2014 my order ships tomorrow.",
+      "agent_reply": "Kindly note that per our policy, address changes cannot be processed once an order has been confirmed. We regret to inform you that we are unable to assist with this request.",
+      "intended_tier": "poor",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Policy may be accurate but no verification or alternatives offered"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Formal but cold; missing empathy, acknowledgment, and warm tone"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "No acknowledgment, no next steps, no timeline, no further assistance offer"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Dismissive response missing all required elements; fails brand empathy and completeness standards.",
+        "overall": 0.37
+      }
+    },
+    {
+      "reply_id": "R017",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I returned my order 3 weeks ago and still no refund.",
+      "agent_reply": "I sincerely apologize for the extended delay. I've located your return \u2014 it was received at our warehouse on the 12th but not processed due to a backlog. I've manually approved your refund now, and you'll see it within 2 business days. As an apology, I've added a $25 store credit. Please reach out if you don't see the refund by Tuesday.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Refund approved, credit added, timeline given \u2014 factually solid"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Formal tone, no casual language, missing energy and friendly sign-off"
+        },
+        "completeness": {
+          "score": 4,
+          "reason": "Acknowledges issue, resolves, offers credit, sets follow-up expectation"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Resolved correctly but stiff corporate tone misses Orbit's casual, warm brand voice",
+        "overall": 0.68
+      }
+    },
+    {
+      "reply_id": "R017",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I returned my order 3 weeks ago and still no refund.",
+      "agent_reply": "I sincerely apologize for the extended delay. I've located your return \u2014 it was received at our warehouse on the 12th but not processed due to a backlog. I've manually approved your refund now, and you'll see it within 2 business days. As an apology, I've added a $25 store credit. Please reach out if you don't see the refund by Tuesday.",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 5,
+          "reason": "Specific details, clear timeline, concrete action taken"
+        },
+        "brand_voice": {
+          "score": 5,
+          "reason": "Formal, empathetic, uses 'sincerely', no forbidden words"
+        },
+        "completeness": {
+          "score": 5,
+          "reason": "Acknowledgment, resolution, ETA, credit, follow-up offered"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Exemplary response; formal, complete, empathetic, with clear timeline and remedy.",
+        "overall": 0.97
+      }
+    },
+    {
+      "reply_id": "R018",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Your size guide is wrong \u2014 the medium runs huge.",
+      "agent_reply": "Thanks so much for the feedback, that's super helpful! I'm passing this along to our product team. For your order: want me to send a small in exchange? No need to send the medium back, just keep it or pass it on.",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Resolution offered is reasonable; no policy errors apparent"
+        },
+        "brand_voice": {
+          "score": 4,
+          "reason": "Casual, warm, direct \u2014 fits Orbit tone well, no forbidden phrases"
+        },
+        "completeness": {
+          "score": 3,
+          "reason": "Missing friendly sign-off and direct acknowledgment of the issue"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Good tone and resolution but lacks direct acknowledgment and friendly sign-off",
+        "overall": 0.78
+      }
+    },
+    {
+      "reply_id": "R018",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Your size guide is wrong \u2014 the medium runs huge.",
+      "agent_reply": "Thanks so much for the feedback, that's super helpful! I'm passing this along to our product team. For your order: want me to send a small in exchange? No need to send the medium back, just keep it or pass it on.",
+      "intended_tier": "excellent_casual",
+      "scores": {
+        "accuracy": {
+          "score": 2,
+          "reason": "Unclear resolution; 'small in exchange' is ambiguous and incomplete"
+        },
+        "brand_voice": {
+          "score": 1,
+          "reason": "Casual tone, missing empathy, no formal language; 'want me' is informal"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "No acknowledgment, no timeline/ETA, no offer for further assistance"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Overly casual, missing required elements, fails brand voice and completeness standards entirely.",
+        "overall": 0.27
+      }
+    },
+    {
+      "reply_id": "R019",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "I emailed last week and no one has responded.",
+      "agent_reply": "I'm very sorry for the delay in our response. I've reviewed your prior message and have a resolution ready \u2014 could you confirm the order number associated with your inquiry so I can apply it correctly? Once confirmed I'll process this within the hour.",
+      "intended_tier": "acceptable",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "No resolution offered yet; asks for info that may already exist"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Formal, stiff tone; missing warmth, energy, and brand keywords"
+        },
+        "completeness": {
+          "score": 2,
+          "reason": "No direct resolution; delays action pending confirmation"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Too formal, no resolution delivered, missing Orbit voice and required elements entirely",
+        "overall": 0.41
+      }
+    },
+    {
+      "reply_id": "R019",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "I emailed last week and no one has responded.",
+      "agent_reply": "I'm very sorry for the delay in our response. I've reviewed your prior message and have a resolution ready \u2014 could you confirm the order number associated with your inquiry so I can apply it correctly? Once confirmed I'll process this within the hour.",
+      "intended_tier": "acceptable",
+      "scores": {
+        "accuracy": {
+          "score": 4,
+          "reason": "Resolution claimed but order number not yet obtained; minor process gap"
+        },
+        "brand_voice": {
+          "score": 4,
+          "reason": "Formal and empathetic tone; lacks tone keywords like sincerely or appreciate"
+        },
+        "completeness": {
+          "score": 3,
+          "reason": "Missing explicit acknowledgment of frustration and offer for further assistance"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": false,
+        "summary": "Solid professional reply but missing required empathy acknowledgment and closing assistance offer.",
+        "overall": 0.77
+      }
+    },
+    {
+      "reply_id": "R020",
+      "rubric_id": "orbit_casual",
+      "client_name": "Orbit Streetwear",
+      "customer_message": "Is this product BPA-free?",
+      "agent_reply": "Yes! All our containers are BPA-free, FDA-compliant, and dishwasher-safe up to 220\u00b0F. The full materials list is in the product spec sheet linked at the bottom of the product page. Let me know if you have any other questions!",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 3,
+          "reason": "Claims seem plausible but unverifiable; references spec sheet appropriately"
+        },
+        "brand_voice": {
+          "score": 3,
+          "reason": "Friendly but lacks Orbit Streetwear energy; reads like a different brand"
+        },
+        "completeness": {
+          "score": 3,
+          "reason": "Answers product question but no friendly sign-off or Orbit tone markers"
+        },
+        "sla": "pass",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Response seems mismatched to Orbit Streetwear \u2014 likely wrong client context applied",
+        "overall": 0.67
+      }
+    },
+    {
+      "reply_id": "R020",
+      "rubric_id": "nimbus_formal",
+      "client_name": "Nimbus Co.",
+      "customer_message": "Is this product BPA-free?",
+      "agent_reply": "Yes! All our containers are BPA-free, FDA-compliant, and dishwasher-safe up to 220\u00b0F. The full materials list is in the product spec sheet linked at the bottom of the product page. Let me know if you have any other questions!",
+      "intended_tier": "excellent",
+      "scores": {
+        "accuracy": {
+          "score": 2,
+          "reason": "Response appears to reference physical products, not SaaS software"
+        },
+        "brand_voice": {
+          "score": 2,
+          "reason": "Casual tone, missing empathy, acknowledgment, and formal language"
+        },
+        "completeness": {
+          "score": 1,
+          "reason": "Missing acknowledgment, timeline, and offer for further assistance"
+        },
+        "sla": "fail",
+        "escalation": "n/a",
+        "flag_for_review": true,
+        "summary": "Wrong industry content, poor brand voice, missing all required elements.",
+        "overall": 0.32
+      }
+    }
+  ]
+}

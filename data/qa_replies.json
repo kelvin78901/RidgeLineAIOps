@@ -1,0 +1,124 @@
+{
+  "replies": [
+    {
+      "id": "R001",
+      "customer_message": "I never received my order. It's been 8 days and the tracking hasn't updated.",
+      "agent_reply": "Thank you for bringing this to my attention, and I sincerely apologize for the inconvenience this delay has caused. I've located your order and confirmed the carrier mis-scanned the package — I've initiated a replacement shipment which will arrive within 2-3 business days via expedited delivery. I've also applied a 15% credit to your account for the inconvenience. Please don't hesitate to reach out if you have any further concerns.",
+      "intended_tier": "excellent"
+    },
+    {
+      "id": "R002",
+      "customer_message": "I never received my order. It's been 8 days and the tracking hasn't updated.",
+      "agent_reply": "Hey! So sorry about that — totally on us. Carrier scanned wrong, I just pushed a replacement with 2-day shipping and added 15% off your next one. You'll get a tracking update tonight 🙌",
+      "intended_tier": "excellent_casual"
+    },
+    {
+      "id": "R003",
+      "customer_message": "Where is my refund?? You said 5 days and it's been 2 weeks.",
+      "agent_reply": "Done — refunded. Should show up soon.",
+      "intended_tier": "poor"
+    },
+    {
+      "id": "R004",
+      "customer_message": "Where is my refund?? You said 5 days and it's been 2 weeks.",
+      "agent_reply": "I completely understand your frustration, and I apologize for the delay. I've just looked into your account and processed the refund manually — it will appear in your original payment method within 24-48 hours. I'm also adding a 20% courtesy credit to your account. If you don't see the refund by Friday, please reply to this email and I'll escalate immediately.",
+      "intended_tier": "excellent"
+    },
+    {
+      "id": "R005",
+      "customer_message": "The product arrived broken. This is the second time.",
+      "agent_reply": "Per our return policy, please ship the item back at your expense and we will issue a refund within 14 business days of receipt of the aforementioned merchandise.",
+      "intended_tier": "poor"
+    },
+    {
+      "id": "R006",
+      "customer_message": "The product arrived broken. This is the second time.",
+      "agent_reply": "Oh no, two in a row?? Seriously sorry. Don't bother sending the broken one back — keep it or recycle it. I'm shipping a new one today and throwing in a free tee for the trouble. We got this. 🙌",
+      "intended_tier": "excellent_casual"
+    },
+    {
+      "id": "R007",
+      "customer_message": "I want to cancel my subscription.",
+      "agent_reply": "Yo dude, no worries, lmk if you change your mind 👍",
+      "intended_tier": "poor"
+    },
+    {
+      "id": "R008",
+      "customer_message": "I want to cancel my subscription.",
+      "agent_reply": "I'm sorry to hear you'd like to cancel, and I appreciate you letting us know. I've processed the cancellation effective today — you won't be charged again, and you'll retain access through the end of your current billing period (ends Aug 14). If there's anything specific that drove your decision I'd love to hear it. Please don't hesitate to reach out if we can help in the future.",
+      "intended_tier": "excellent"
+    },
+    {
+      "id": "R009",
+      "customer_message": "Your app keeps crashing when I try to log in.",
+      "agent_reply": "We're aware of a login issue affecting some users and our engineering team is actively working on a fix. I've added you to our priority notification list — you'll receive an email the moment the fix is deployed (expected within 24 hours). As an interim workaround, please try logging in from the web portal at app.example.com. Apologies for the disruption.",
+      "intended_tier": "excellent"
+    },
+    {
+      "id": "R010",
+      "customer_message": "Your app keeps crashing when I try to log in.",
+      "agent_reply": "have you tried turning it off and on again",
+      "intended_tier": "poor"
+    },
+    {
+      "id": "R011",
+      "customer_message": "Can I get a discount? I've been a customer for 3 years.",
+      "agent_reply": "Hey, totally — three years is huge! Just dropped a 25% loyalty code in your account: LOYAL3YR. Valid for the next 30 days, stacks with sale items. Anything else I can do for you?",
+      "intended_tier": "excellent_casual"
+    },
+    {
+      "id": "R012",
+      "customer_message": "Can I get a discount? I've been a customer for 3 years.",
+      "agent_reply": "Discount codes are only available during promotional periods. Please subscribe to our newsletter to be notified.",
+      "intended_tier": "acceptable"
+    },
+    {
+      "id": "R013",
+      "customer_message": "I was charged twice for the same order.",
+      "agent_reply": "Thank you for catching that, and I apologize for the billing error. I've confirmed the duplicate charge and processed a refund for the second transaction — it will appear in your account within 3-5 business days. I've also flagged this with our payments team to investigate the cause. Is there anything else I can help with?",
+      "intended_tier": "excellent"
+    },
+    {
+      "id": "R014",
+      "customer_message": "I was charged twice for the same order.",
+      "agent_reply": "ok refunding now",
+      "intended_tier": "poor"
+    },
+    {
+      "id": "R015",
+      "customer_message": "I need to change my shipping address — my order ships tomorrow.",
+      "agent_reply": "Hey, got you! I caught it in time — address is updated to the new one. Order will ship to that address tomorrow as planned. You're good 🚀",
+      "intended_tier": "excellent_casual"
+    },
+    {
+      "id": "R016",
+      "customer_message": "I need to change my shipping address — my order ships tomorrow.",
+      "agent_reply": "Kindly note that per our policy, address changes cannot be processed once an order has been confirmed. We regret to inform you that we are unable to assist with this request.",
+      "intended_tier": "poor"
+    },
+    {
+      "id": "R017",
+      "customer_message": "I returned my order 3 weeks ago and still no refund.",
+      "agent_reply": "I sincerely apologize for the extended delay. I've located your return — it was received at our warehouse on the 12th but not processed due to a backlog. I've manually approved your refund now, and you'll see it within 2 business days. As an apology, I've added a $25 store credit. Please reach out if you don't see the refund by Tuesday.",
+      "intended_tier": "excellent"
+    },
+    {
+      "id": "R018",
+      "customer_message": "Your size guide is wrong — the medium runs huge.",
+      "agent_reply": "Thanks so much for the feedback, that's super helpful! I'm passing this along to our product team. For your order: want me to send a small in exchange? No need to send the medium back, just keep it or pass it on.",
+      "intended_tier": "excellent_casual"
+    },
+    {
+      "id": "R019",
+      "customer_message": "I emailed last week and no one has responded.",
+      "agent_reply": "I'm very sorry for the delay in our response. I've reviewed your prior message and have a resolution ready — could you confirm the order number associated with your inquiry so I can apply it correctly? Once confirmed I'll process this within the hour.",
+      "intended_tier": "acceptable"
+    },
+    {
+      "id": "R020",
+      "customer_message": "Is this product BPA-free?",
+      "agent_reply": "Yes! All our containers are BPA-free, FDA-compliant, and dishwasher-safe up to 220°F. The full materials list is in the product spec sheet linked at the bottom of the product page. Let me know if you have any other questions!",
+      "intended_tier": "excellent"
+    }
+  ]
+}

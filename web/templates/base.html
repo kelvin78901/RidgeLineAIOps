@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Ridgeline AI Ops{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50:  "#eef2ff", 100: "#e0e7ff", 200: "#c7d2fe",
+            500: "#6366f1", 600: "#4f46e5", 700: "#4338ca",
+          }
+        },
+        fontFamily: {
+          sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', 'Inter',
+                 '"Segoe UI"', '"Helvetica Neue"', 'system-ui', 'sans-serif'],
+          mono: ['"SF Mono"', '"JetBrains Mono"', 'Menlo', 'Consolas', 'monospace'],
+        },
+        boxShadow: {
+          card: "0 1px 2px rgba(15,23,42,.04), 0 1px 1px rgba(15,23,42,.02)",
+        }
+      }
+    }
+  }
+</script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside class="hidden md:flex md:flex-col md:w-60 bg-white border-r border-gray-200 sticky top-0 h-screen">
+    <div class="px-5 py-5 border-b border-gray-200">
+      <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase">Ridgeline</div>
+      <div class="text-lg font-semibold text-gray-900 leading-tight mt-0.5">AI Ops</div>
+    </div>
+    <nav class="flex-1 px-3 py-4 space-y-1">
+      {% for item in nav %}
+        <a href="{{ item.href }}"
+           class="block px-3 py-2 rounded-md text-sm
+                  {% if active == item.key %}
+                    bg-brand-50 text-brand-700 font-medium
+                  {% else %}
+                    text-gray-700 hover:bg-gray-100
+                  {% endif %}">
+          {{ item.label }}
+        </a>
+      {% endfor %}
+    </nav>
+    <div class="px-4 py-3 border-t border-gray-200 space-y-2">
+      <div class="text-[10px] font-semibold tracking-widest text-gray-500 uppercase">LLM</div>
+      <select id="model-picker" class="w-full border border-gray-300 rounded-md text-xs px-2 py-1.5 bg-white">
+        <!-- populated by app.js from /api/models -->
+        <option value="">loading…</option>
+      </select>
+      <div class="text-[10px] text-gray-500 leading-tight">
+        Applies to <b>Assistant</b> & live agent. Other modules use cached results.
+      </div>
+      <div class="text-[10px] text-gray-400 pt-1">{{ today }}</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 min-w-0">
+    <!-- Mobile nav (simple) -->
+    <div class="md:hidden bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap gap-2">
+      {% for item in nav %}
+        <a href="{{ item.href }}" class="text-xs px-2 py-1 rounded
+          {% if active == item.key %}bg-brand-600 text-white{% else %}bg-gray-100 text-gray-700{% endif %}">
+          {{ item.label }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="px-6 lg:px-8 py-6 max-w-[1400px] mx-auto">
+      <header class="mb-6">
+        <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase">
+          {% block crumb %}{% endblock %}
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mt-1">{% block heading %}{% endblock %}</h1>
+        {% block subtitle %}{% endblock %}
+      </header>
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

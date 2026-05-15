@@ -1,0 +1,60 @@
+{# ------- KPI card ------- #}
+{% macro kpi(label, value, delta=None) %}
+  <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card">
+    <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase">{{ label }}</div>
+    <div class="mt-1 text-[26px] font-bold text-gray-900 leading-tight tabular-nums">{{ value }}</div>
+    {% if delta %}<div class="text-xs text-gray-500 mt-0.5">{{ delta }}</div>{% endif %}
+  </div>
+{% endmacro %}
+
+{# ------- Tag pill ------- #}
+{% macro tag(label, variant="slate") %}
+  {% set cls = {
+    "red":    "bg-red-50 text-red-700 border-red-200",
+    "amber":  "bg-amber-50 text-amber-700 border-amber-200",
+    "green":  "bg-emerald-50 text-emerald-700 border-emerald-200",
+    "blue":   "bg-brand-50 text-brand-700 border-brand-200",
+    "violet": "bg-violet-50 text-violet-700 border-violet-200",
+    "slate":  "bg-gray-100 text-gray-700 border-gray-200",
+    "orange": "bg-orange-50 text-orange-700 border-orange-200",
+  }[variant] %}
+  <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border whitespace-nowrap tabular-nums {{ cls }}">{{ label }}</span>
+{% endmacro %}
+
+{# ------- Health pill ------- #}
+{% macro health_pill(health) %}
+  {% if health in ("red", "high", "critical") %}
+    {{ tag("RED", "red") }}
+  {% elif health in ("yellow", "amber", "medium") %}
+    {{ tag("AMBER", "amber") }}
+  {% elif health in ("green", "low", "ok") %}
+    {{ tag("GREEN", "green") }}
+  {% else %}
+    {{ tag(health|upper, "slate") }}
+  {% endif %}
+{% endmacro %}
+
+{# ------- Section title ------- #}
+{% macro section_title(label) %}
+  <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase mt-6 mb-2">{{ label }}</div>
+{% endmacro %}
+
+{# ------- Empty state ------- #}
+{% macro empty(message, command=None) %}
+  <div class="bg-white border border-dashed border-gray-300 rounded-lg p-6 text-gray-600">
+    <div class="font-medium text-gray-900 mb-1">{{ message }}</div>
+    {% if command %}
+      <div class="text-sm mt-2">Run:
+        <code class="font-mono text-xs text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">{{ command }}</code>
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{# ------- Card wrapper ------- #}
+{% macro card(extra_class="") %}
+  <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card {{ extra_class }}">
+{% endmacro %}
+{% macro card_end() %}
+  </div>
+{% endmacro %}

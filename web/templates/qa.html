@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}Module 3 · Quality assurance{% endblock %}
+{% block heading %}LLM-as-Judge QA Evaluator{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    Every support reply is scored against each client brand rubric. The same reply
+    often scores very differently across brands — proving that one-size-fits-all QA
+    fails for multi-client agencies.
+  </p>
+{% endblock %}
+
+{% block content %}
+{% if not has_data %}
+  {{ m.empty("QA results not found.",
+             "python -c &quot;from core.qa_evaluator import batch_evaluate; batch_evaluate()&quot;") }}
+{% else %}
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+  {{ m.kpi("Replies",   kpis.replies) }}
+  {{ m.kpi("Rubrics",   kpis.rubrics) }}
+  {{ m.kpi("Avg overall", "%.2f"|format(kpis.avg)) }}
+  {{ m.kpi("Flagged",   kpis.flagged) }}
+  {{ m.kpi("SLA fails", kpis.sla_fail) }}
+</div>
+
+<!-- Filters -->
+<div class="mt-5 bg-white border border-gray-200 rounded-lg p-3 shadow-card flex flex-wrap items-end gap-3">
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Rubric</label>
+    <select id="f-rubric" multiple size="3" class="border border-gray-300 rounded-md text-sm px-2 py-1 w-44">
+      {% for r in rubrics %}<option value="{{ r }}" selected>{{ r }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Intended tier</label>
+    <select id="f-tier" multiple size="3" class="border border-gray-300 rounded-md text-sm px-2 py-1 w-44">
+      {% for t in tiers %}<option value="{{ t }}" selected>{{ t }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Overall score ≥</label>
+    <input id="f-min" type="range" min="0" max="1" step="0.05" value="0" class="w-32">
+    <span id="f-min-val" class="text-sm font-medium ml-2 tabular-nums">0.00</span>
+  </div>
+  <div class="flex-1 min-w-[200px]">
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Search</label>
+    <input id="f-search" type="search" placeholder="reply, summary or customer message…"
+           class="border border-gray-300 rounded-md text-sm px-2 py-1 w-full">
+  </div>
+</div>
+
+<!-- Charts -->
+{{ m.section_title("Brand & dimension breakdown") }}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Average overall by brand</div>
+    <div id="chart-brand" class="chart" style="height: 240px"></div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Score distribution by brand</div>
+    <div id="chart-box" class="chart" style="height: 240px"></div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Dimension means (1-5)</div>
+    <div id="chart-dim" class="chart" style="height: 240px"></div>
+  </div>
+</div>
+
+<!-- Divergence cards -->
+{{ m.section_title("Largest brand-voice divergence") }}
+<div class="space-y-3">
+  {% for d in divergence %}
+  <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card">
+    <div class="flex items-center justify-between gap-3">
+      <div class="font-semibold text-gray-900">{{ d.reply_id }}
+        <span class="text-gray-500 font-normal text-sm">· intended: {{ d.tier }}</span>
+      </div>
+      {{ m.tag("divergence " ~ "%.2f"|format(d.divergence), "orange") }}
+    </div>
+    <div class="text-sm text-gray-600 mt-1"><span class="font-semibold text-gray-800">Customer:</span> {{ d.customer_message }}</div>
+    <div class="mt-2 p-3 bg-gray-50 border-l-4 border-brand-500 rounded-r text-sm text-gray-800">
+      <span class="font-semibold">Agent reply:</span> {{ d.agent_reply }}
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+      {% for r in d.rows %}
+        <div class="border border-gray-200 rounded-lg p-3 bg-gray-50">
+          <div class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">{{ r.client }} · {{ r.rubric }}</div>
+          <div class="text-3xl font-bold text-gray-900 tabular-nums mt-1">{{ "%.2f"|format(r.overall) }}</div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            {{ m.tag("voice " ~ r.brand_voice ~ "/5", "blue") }}
+            {{ m.tag("acc " ~ r.accuracy ~ "/5", "violet") }}
+            {{ m.tag("sla:" ~ r.sla, ("green" if r.sla=="pass" else "red")) }}
+          </div>
+          <div class="text-xs text-gray-600 mt-2">{{ r.summary }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Heatmap -->
+{{ m.section_title("Score matrix (reply × rubric)") }}
+<div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+  <div id="chart-heatmap" class="chart" style="height: 480px"></div>
+</div>
+
+<!-- Table -->
+{{ m.section_title("All evaluations") }}
+<div class="overflow-x-auto">
+<table class="dt">
+  <thead><tr>
+    <th>Reply</th><th>Client</th><th>Tier</th>
+    <th class="num">Overall</th><th class="num">Accuracy</th>
+    <th class="num">Voice</th><th class="num">Compl.</th>
+    <th>SLA</th><th>Escalation</th><th>Flag</th><th>Summary</th>
+  </tr></thead>
+  <tbody>
+    {% for e in evals %}
+    <tr class="eval-row"
+        data-rubric="{{ e.rubric }}"
+        data-tier="{{ e.tier }}"
+        data-overall="{{ e.overall }}"
+        data-text="{{ (e.agent_reply ~ ' ' ~ e.summary ~ ' ' ~ e.customer_message)|lower }}">
+      <td class="font-mono text-xs">{{ e.reply_id }}</td>
+      <td>{{ e.client }}</td>
+      <td class="text-xs">{{ e.tier }}</td>
+      <td class="num">{{ "%.2f"|format(e.overall) }}</td>
+      <td class="num">{{ e.accuracy }}</td>
+      <td class="num">{{ e.brand_voice }}</td>
+      <td class="num">{{ e.completeness }}</td>
+      <td>{% if e.sla == "pass" %}{{ m.tag("PASS","green") }}{% else %}{{ m.tag("FAIL","red") }}{% endif %}</td>
+      <td class="text-xs">{{ e.escalation }}</td>
+      <td>{% if e.flag %}{{ m.tag("YES","amber") }}{% else %}{{ m.tag("NO","slate") }}{% endif %}</td>
+      <td class="text-xs text-gray-600">{{ e.summary }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<script type="application/json" id="evals-data">{{ evals_json|safe }}</script>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const evals = JSON.parse(document.getElementById("evals-data")?.textContent || "[]");
+  if (!evals.length) return;
+
+  // Brand averages
+  const byClient = {};
+  evals.forEach(e => { (byClient[e.client] = byClient[e.client] || []).push(e.overall); });
+  const clients = Object.keys(byClient);
+  const avgs = clients.map(c => byClient[c].reduce((s,v)=>s+v,0)/byClient[c].length);
+  const colors = ["#4f46e5","#ea580c","#059669","#dc2626"];
+  Plotly.newPlot("chart-brand", [{
+    type:"bar", x: clients, y: avgs,
+    marker:{color: clients.map((_,i)=>colors[i % colors.length])},
+    text: avgs.map(v=>v.toFixed(2)), textposition:"outside",
+  }], {margin:{l:30,r:10,t:10,b:30}, yaxis:{range:[0,1]},
+      plot_bgcolor:"transparent", paper_bgcolor:"transparent"},
+     {displayModeBar:false, responsive:true});
+
+  // Box plot
+  const boxes = clients.map((c,i) => ({
+    type:"box", y: byClient[c], name: c, boxpoints:"all", jitter:0.4,
+    marker:{color: colors[i % colors.length]},
+  }));
+  Plotly.newPlot("chart-box", boxes, {
+    margin:{l:30,r:10,t:10,b:30}, yaxis:{range:[0,1]},
+    plot_bgcolor:"transparent", paper_bgcolor:"transparent", showlegend:false,
+  }, {displayModeBar:false, responsive:true});
+
+  // Dimension bars
+  const byRubric = {};
+  evals.forEach(e => {
+    if (!byRubric[e.rubric]) byRubric[e.rubric] = {accuracy:[], brand_voice:[], completeness:[]};
+    byRubric[e.rubric].accuracy.push(e.accuracy);
+    byRubric[e.rubric].brand_voice.push(e.brand_voice);
+    byRubric[e.rubric].completeness.push(e.completeness);
+  });
+  const dims = ["accuracy","brand_voice","completeness"];
+  const dimTraces = Object.keys(byRubric).map((r,i) => ({
+    type:"bar", name: r, x: dims,
+    y: dims.map(d => byRubric[r][d].reduce((s,v)=>s+v,0) / byRubric[r][d].length),
+    marker: {color: colors[i % colors.length]},
+  }));
+  Plotly.newPlot("chart-dim", dimTraces, {
+    margin:{l:30,r:10,t:10,b:30}, barmode:"group", yaxis:{range:[0,5]},
+    plot_bgcolor:"transparent", paper_bgcolor:"transparent",
+    legend:{orientation:"h", y: 1.1, x: 0.5, xanchor:"center"},
+  }, {displayModeBar:false, responsive:true});
+
+  // Heatmap
+  const replyIds = [...new Set(evals.map(e=>e.reply_id))].sort();
+  const rubricIds = [...new Set(evals.map(e=>e.rubric))].sort();
+  const z = replyIds.map(rid => rubricIds.map(rub => {
+    const row = evals.find(e => e.reply_id === rid && e.rubric === rub);
+    return row ? row.overall : null;
+  }));
+  Plotly.newPlot("chart-heatmap", [{
+    type:"heatmap", x: rubricIds, y: replyIds, z: z,
+    colorscale:[[0,"#dc2626"],[0.5,"#fcd34d"],[1,"#059669"]],
+    zmin: 0, zmax: 1,
+    text: z, texttemplate:"%{text:.2f}",
+    hovertemplate:"%{y} · %{x}: %{z:.2f}<extra></extra>",
+  }], {margin:{l:60,r:10,t:10,b:30}, plot_bgcolor:"transparent", paper_bgcolor:"transparent"},
+     {displayModeBar:false, responsive:true});
+
+  // Filtering
+  const fR = document.getElementById("f-rubric");
+  const fT = document.getElementById("f-tier");
+  const fM = document.getElementById("f-min");
+  const fMv = document.getElementById("f-min-val");
+  const fS = document.getElementById("f-search");
+  function getMulti(el) { return Array.from(el.selectedOptions).map(o=>o.value); }
+  function apply() {
+    const rs = getMulti(fR), ts = getMulti(fT);
+    const minScore = parseFloat(fM.value);
+    fMv.textContent = minScore.toFixed(2);
+    const q = fS.value.trim().toLowerCase();
+    document.querySelectorAll(".eval-row").forEach(row => {
+      const ok = rs.includes(row.dataset.rubric)
+              && ts.includes(row.dataset.tier)
+              && parseFloat(row.dataset.overall) >= minScore
+              && (!q || row.dataset.text.includes(q));
+      row.style.display = ok ? "" : "none";
+    });
+  }
+  [fR, fT, fM, fS].forEach(el => el.addEventListener("input", apply));
+});
+</script>
+{% endblock %}

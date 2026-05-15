@@ -1,0 +1,152 @@
+/* Minimal custom layer on top of Tailwind. Keep tiny — most styling is utility-driven. */
+html { scroll-behavior: smooth; }
+
+.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+
+/* Plotly chart container — make sure overflows don't push layout */
+.chart { width: 100%; min-height: 0; }
+.chart .modebar { display: none !important; }
+
+/* Inline code in body text */
+code.inline {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* Source code viewer — Python with line numbers */
+pre.code-source {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  background: #0b1020;
+  color: #e2e8f0;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+pre.code-source .ln { display: inline-block; min-width: 28px; color: #64748b; user-select: none; text-align: right; padding-right: 10px; }
+
+/* Chat bubble */
+.bubble {
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04);
+}
+.bubble.customer { background: #eef2ff; border-color: #c7d2fe; }
+.bubble .who {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #6b7280; margin-bottom: 4px;
+}
+
+/* Tool call expander */
+.tool {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  margin: 6px 0;
+}
+.tool summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.tool summary::-webkit-details-marker { display: none; }
+.tool[open] summary { border-bottom: 1px solid #e5e7eb; }
+.tool .tool-body { padding: 10px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tool .tool-body pre { font-family: "SF Mono","JetBrains Mono",Menlo,monospace; font-size: 11.5px; background:#fff; border:1px solid #e5e7eb; border-radius:6px; padding:8px 10px; overflow:auto; max-height: 260px; }
+@media (max-width: 768px) { .tool .tool-body { grid-template-columns: 1fr; } }
+
+/* Table polish */
+table.dt {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+  overflow: hidden;
+}
+table.dt th, table.dt td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; text-align: left; vertical-align: top; }
+table.dt th {
+  background: #f8fafc; color: #475569; font-weight: 600;
+  text-transform: uppercase; font-size: 11px; letter-spacing: .04em;
+  border-bottom: 1px solid #e5e7eb;
+}
+table.dt tbody tr:hover { background: #f9fafb; }
+table.dt td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Markdown content rendered inside assistant bubbles */
+.markdown { font-size: 14px; line-height: 1.6; color: #0f172a; }
+.markdown > *:first-child { margin-top: 0; }
+.markdown > *:last-child  { margin-bottom: 0; }
+.markdown p { margin: 0 0 10px 0; }
+.markdown strong { font-weight: 600; color: #0f172a; }
+.markdown em { font-style: italic; color: #1e293b; }
+.markdown a { color: #4f46e5; text-decoration: underline; }
+.markdown code {
+  font-family: "SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  font-size: 12.5px; background: #f3f4f6;
+  border: 1px solid #e5e7eb; border-radius: 4px;
+  padding: 1px 5px; color: #1e293b;
+}
+.markdown pre {
+  background: #0b1020; color: #e2e8f0;
+  padding: 12px 14px; border-radius: 8px;
+  overflow-x: auto; margin: 10px 0; font-size: 12px; line-height: 1.5;
+}
+.markdown pre code { background: transparent; border: none; padding: 0; color: inherit; font-size: 12px; }
+.markdown h1, .markdown h2, .markdown h3, .markdown h4 {
+  font-weight: 600; color: #0f172a; margin: 14px 0 6px 0; line-height: 1.3;
+}
+.markdown h1 { font-size: 18px; }
+.markdown h2 { font-size: 16px; }
+.markdown h3 { font-size: 14px; }
+.markdown h4 { font-size: 13px; }
+.markdown ul, .markdown ol { margin: 6px 0 10px 0; padding-left: 22px; }
+.markdown li { margin: 3px 0; }
+.markdown blockquote {
+  border-left: 3px solid #c7d2fe; padding: 4px 12px;
+  margin: 8px 0; color: #475569; background: #f8fafc; border-radius: 0 6px 6px 0;
+}
+.markdown hr { border: none; border-top: 1px solid #e5e7eb; margin: 12px 0; }
+.markdown table { border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+.markdown th, .markdown td { border: 1px solid #e5e7eb; padding: 6px 10px; }
+.markdown th { background: #f8fafc; font-weight: 600; }
+
+/* Streaming cursor */
+.markdown .cursor::after {
+  content: "▍"; color: #4f46e5; animation: blink 1s steps(2) infinite;
+  margin-left: 1px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Conversation history sidebar items */
+.conv-item {
+  display: block; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid transparent; cursor: pointer;
+  color: #334155; font-size: 13px; line-height: 1.35;
+}
+.conv-item:hover { background: #f3f4f6; }
+.conv-item.active { background: #eef2ff; border-color: #c7d2fe; color: #1e1b4b; }
+.conv-item .meta { font-size: 10px; color: #6b7280; margin-top: 2px; }
+.conv-item .del {
+  float: right; opacity: 0; transition: opacity 0.15s; padding: 0 4px;
+  color: #9ca3af; font-size: 11px;
+}
+.conv-item:hover .del { opacity: 1; }
+.conv-item .del:hover { color: #dc2626; }

@@ -1,0 +1,68 @@
+{
+  "tickets": [
+    {
+      "ticket_id": "T-0001",
+      "scenario_id": "S1",
+      "customer_message": "Hi, I think I was charged twice for order ORD-4521. My email is alex@example.com. Can you refund the duplicate?",
+      "status": "ended_no_action",
+      "turns": 3,
+      "archive": null,
+      "escalation": null
+    },
+    {
+      "ticket_id": "T-0002",
+      "scenario_id": "S2",
+      "customer_message": "I've been a customer since 2022. casey@example.com here. I want a 50% off code for my next order or I'm leaving.",
+      "status": "ended_no_action",
+      "turns": 2,
+      "archive": null,
+      "escalation": null
+    },
+    {
+      "ticket_id": "T-0003",
+      "scenario_id": "S3",
+      "customer_message": "Order ORD-8821 \u2014 please change my shipping address to 88 Cedar Way, Austin TX 78704. drew@example.com",
+      "status": "resolved",
+      "turns": 3,
+      "archive": {
+        "category": "shipping",
+        "sentiment_at_close": "positive",
+        "summary": "Customer Drew Singh requested a shipping address update for order ORD-8821 from 401 Pine Ave to 88 Cedar Way, Austin TX 78704. Update was successful as the order was in ready_to_ship status.",
+        "actions_taken": [
+          "Looked up customer record for drew@example.com (C-1004)",
+          "Looked up order ORD-8821 (status: ready_to_ship)",
+          "Updated shipping address to 88 Cedar Way, Austin TX 78704"
+        ]
+      },
+      "escalation": null
+    },
+    {
+      "ticket_id": "T-0004",
+      "scenario_id": "S4",
+      "customer_message": "Cancel my account and erase all my data. eve@example.com",
+      "status": "escalated",
+      "turns": 1,
+      "archive": null,
+      "escalation": {
+        "category": "account",
+        "priority": "normal",
+        "summary": "Customer eve@example.com is requesting account deletion and full data erasure.",
+        "reason": "Account deletion and data erasure are prohibited actions for the AI agent and require human handling for privacy/legal compliance."
+      }
+    },
+    {
+      "ticket_id": "T-0005",
+      "scenario_id": "S5",
+      "customer_message": "I want a full refund on ORD-9012 for $780. The jacket has stitching defects. casey@example.com",
+      "status": "escalated",
+      "turns": 3,
+      "archive": null,
+      "escalation": {
+        "category": "billing",
+        "priority": "high",
+        "summary": "Platinum customer Casey Park (C-1003) requesting full $780 refund on ORD-9012 (Designer jacket) due to stitching defects; order confirmed eligible for refund.",
+        "reason": "Refund amount of $780 (78000 cents) exceeds the automated $500 (50000 cents) hard limit and requires human approval."
+      }
+    }
+  ]
+}

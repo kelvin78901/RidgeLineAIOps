@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}Module 2 · Predictive analytics{% endblock %}
+{% block heading %}Churn Risk Model{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    XGBoost on 7,043 IBM Telco customers, augmented with four Ridgeline signals
+    (Slack sentiment, QA trend, SLA breaches, CSAT change). SHAP explains per-client risk.
+  </p>
+{% endblock %}
+
+{% block content %}
+{% if not has_data %}
+  {{ m.empty("Model artifacts not found.",
+             "python -c &quot;from core.churn_trainer import train; train()&quot;") }}
+{% else %}
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+  {{ m.kpi("Model AUC", "%.3f"|format(summary.auc)) }}
+  {{ m.kpi("Customers scored", "{:,}".format(summary.n_test)) }}
+  {{ m.kpi("High risk",   bands.high, "%.0f%%"|format(100*bands.high/(bands.high+bands.med+bands.low))) }}
+  {{ m.kpi("Medium risk", bands.med,  "%.0f%%"|format(100*bands.med /(bands.high+bands.med+bands.low))) }}
+  {{ m.kpi("Low risk",    bands.low,  "%.0f%%"|format(100*bands.low /(bands.high+bands.med+bands.low))) }}
+</div>
+
+<!-- Distribution + bands -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-5">
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card lg:col-span-2">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Risk score distribution</div>
+    <div id="chart-hist" class="chart" style="height: 280px"></div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Population segmentation</div>
+    <div id="chart-bands" class="chart" style="height: 280px"></div>
+  </div>
+</div>
+
+<!-- Drill-down -->
+{{ m.section_title("Per-client drill-down") }}
+<form method="get" class="bg-white border border-gray-200 rounded-lg p-3 shadow-card flex flex-wrap items-end gap-3">
+  <div class="flex-1 min-w-[220px]">
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Client</label>
+    <select name="client_id" class="border border-gray-300 rounded-md text-sm px-2 py-1 w-full"
+            onchange="this.form.submit()">
+      {% for cid in client_list %}
+        <option value="{{ cid }}" {% if cid == chosen %}selected{% endif %}>{{ cid }}</option>
+      {% endfor %}
+    </select>
+    <div class="text-[11px] text-gray-500 mt-1">Sorted by descending risk score.</div>
+  </div>
+</form>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-3">
+  <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card">
+    <div class="text-sm text-gray-500">Client</div>
+    <div class="text-lg font-semibold text-gray-900 font-mono">{{ chosen }}</div>
+    <div class="mt-3 flex items-baseline gap-2">
+      {% set color = "#dc2626" if chosen_band == "red" else "#ea580c" if chosen_band == "amber" else "#059669" %}
+      <div class="text-5xl font-bold tabular-nums" style="color: {{ color }}">{{ "%.0f"|format(chosen_risk) }}</div>
+      <div class="text-sm text-gray-500">/100 risk score</div>
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5 mt-3">
+      {{ m.health_pill(chosen_band) }}
+      {% if chosen_churned %}{{ m.tag("CHURNED (GT)", "red") }}{% else %}{{ m.tag("ACTIVE (GT)", "green") }}{% endif %}
+    </div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card lg:col-span-2">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Top SHAP drivers — pushes toward churn (red) / lowers (green)</div>
+    <div id="chart-drivers" class="chart" style="height: 360px"></div>
+  </div>
+</div>
+
+<!-- Global SHAP image -->
+{{ m.section_title("Global feature importance") }}
+<div class="bg-white border border-gray-200 rounded-lg p-2 shadow-card">
+  <img src="/assets/shap_summary.png" alt="SHAP summary"
+       class="w-full rounded">
+</div>
+
+<!-- Top 20 -->
+{{ m.section_title("Top 20 highest-risk clients") }}
+<div class="overflow-x-auto">
+<table class="dt">
+  <thead><tr><th class="num">Rank</th><th>Client</th><th class="num">Risk</th><th>Churned (GT)</th><th>Top drivers</th></tr></thead>
+  <tbody>
+    {% for row in top20 %}
+    <tr>
+      <td class="num">{{ row.rank }}</td>
+      <td class="font-mono">
+        <a href="/churn?client_id={{ row.client_id }}" class="text-brand-700 hover:underline">{{ row.client_id }}</a>
+      </td>
+      <td class="num">{{ "%.1f"|format(row.risk_score) }}</td>
+      <td>
+        {% if row.actually_churned %}{{ m.tag("YES","red") }}{% else %}{{ m.tag("NO","green") }}{% endif %}
+      </td>
+      <td class="text-xs text-gray-600">
+        {{ row.top_drivers[:3]|map(attribute="feature")|join(", ") }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<script type="application/json" id="hist-data">{{ histogram|tojson }}</script>
+<script type="application/json" id="drivers-data">{{ drivers_json|safe }}</script>
+<script type="application/json" id="bands-data">{{ bands|tojson }}</script>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const hist = JSON.parse(document.getElementById("hist-data")?.textContent || "[]");
+  if (hist.length) {
+    const bins = hist.map((_, i) => `${i*5}-${i*5+5}`);
+    const colors = bins.map((_, i) => i < 8 ? "#059669" : i < 14 ? "#ea580c" : "#dc2626");
+    Plotly.newPlot("chart-hist", [{
+      type:"bar", x: bins, y: hist, marker:{color: colors},
+    }], {margin:{l:30,r:10,t:10,b:36}, xaxis:{title:"risk score"}, yaxis:{title:"customers"},
+        plot_bgcolor:"transparent", paper_bgcolor:"transparent"},
+       {displayModeBar:false, responsive:true});
+  }
+  const bands = JSON.parse(document.getElementById("bands-data")?.textContent || "{}");
+  if (bands.high !== undefined) {
+    Plotly.newPlot("chart-bands", [{
+      type:"pie",
+      labels:["High (≥70)","Medium (40-69)","Low (<40)"],
+      values:[bands.high, bands.med, bands.low],
+      marker:{colors:["#dc2626","#ea580c","#059669"]},
+      hole: 0.5, textinfo:"label+percent",
+    }], {margin:{l:0,r:0,t:0,b:0}, showlegend:false,
+        plot_bgcolor:"transparent", paper_bgcolor:"transparent"},
+       {displayModeBar:false, responsive:true});
+  }
+  const drivers = JSON.parse(document.getElementById("drivers-data")?.textContent || "[]");
+  if (drivers.length) {
+    const sorted = drivers.slice().sort((a,b)=>Math.abs(a.shap)-Math.abs(b.shap));
+    Plotly.newPlot("chart-drivers", [{
+      type:"bar", orientation:"h",
+      x: sorted.map(d => d.shap),
+      y: sorted.map(d => d.feature),
+      marker:{color: sorted.map(d => d.shap >= 0 ? "#dc2626" : "#059669")},
+      text: sorted.map(d => d.shap.toFixed(3)),
+      textposition: "outside",
+    }], {margin:{l:160,r:30,t:10,b:30}, xaxis:{title:"SHAP contribution"},
+        plot_bgcolor:"transparent", paper_bgcolor:"transparent"},
+       {displayModeBar:false, responsive:true});
+  }
+});
+</script>
+{% endblock %}

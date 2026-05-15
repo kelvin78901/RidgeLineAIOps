@@ -1,0 +1,28 @@
+{
+  "customers": [
+    {"customer_id": "C-1001", "email": "alex@example.com",    "name": "Alex Lee",      "tier": "gold",     "joined": "2023-04-12", "ltv_cents": 124900},
+    {"customer_id": "C-1002", "email": "blair@example.com",   "name": "Blair Chen",    "tier": "silver",   "joined": "2024-08-03", "ltv_cents":  48900},
+    {"customer_id": "C-1003", "email": "casey@example.com",   "name": "Casey Park",    "tier": "platinum", "joined": "2022-01-19", "ltv_cents": 312400},
+    {"customer_id": "C-1004", "email": "drew@example.com",    "name": "Drew Singh",    "tier": "bronze",   "joined": "2025-11-22", "ltv_cents":   8900},
+    {"customer_id": "C-1005", "email": "eve@example.com",     "name": "Eve Nakamura",  "tier": "gold",     "joined": "2023-09-08", "ltv_cents":  74500}
+  ],
+  "orders": [
+    {"order_id": "ORD-4521", "customer_id": "C-1001", "amount_cents": 12999, "currency": "USD", "status": "delivered",     "placed_at": "2026-04-22", "items": ["Wireless headphones"], "shipping_address": "12 Elm St, Brooklyn NY 11201"},
+    {"order_id": "ORD-4522", "customer_id": "C-1001", "amount_cents": 12999, "currency": "USD", "status": "delivered",     "placed_at": "2026-04-22", "items": ["Wireless headphones (duplicate charge)"], "shipping_address": "12 Elm St, Brooklyn NY 11201"},
+    {"order_id": "ORD-7710", "customer_id": "C-1002", "amount_cents":  4900, "currency": "USD", "status": "delivered",     "placed_at": "2026-03-15", "items": ["Phone case"], "shipping_address": "55 Bay Rd, Oakland CA 94612"},
+    {"order_id": "ORD-8821", "customer_id": "C-1004", "amount_cents":  8900, "currency": "USD", "status": "ready_to_ship", "placed_at": "2026-05-09", "items": ["Hoodie - Large - Black"], "shipping_address": "401 Pine Ave, Austin TX 78701"},
+    {"order_id": "ORD-9012", "customer_id": "C-1003", "amount_cents": 78000, "currency": "USD", "status": "delivered",     "placed_at": "2026-04-30", "items": ["Designer jacket"], "shipping_address": "9 King St, Seattle WA 98101"},
+    {"order_id": "ORD-9013", "customer_id": "C-1003", "amount_cents": 65000, "currency": "USD", "status": "in_transit",    "placed_at": "2026-05-06", "items": ["Leather boots"], "shipping_address": "9 King St, Seattle WA 98101"},
+    {"order_id": "ORD-3344", "customer_id": "C-1005", "amount_cents": 23500, "currency": "USD", "status": "delivered",     "placed_at": "2026-04-02", "items": ["Smart speaker"], "shipping_address": "27 Oak Ln, Denver CO 80202"}
+  ],
+  "refunds": [
+    {"refund_id": "RFD-001", "order_id": "ORD-7710", "amount_cents": 4900, "issued_at": "2026-03-22", "status": "processed", "reason": "wrong size"}
+  ],
+  "policies": {
+    "max_refund_cents": 50000,
+    "max_discount_pct": 15,
+    "shipping_address_change_window_status": ["ready_to_ship", "processing"],
+    "refund_eligibility_days": 30,
+    "blocked_intents": ["delete_account", "share_other_customer_data", "modify_employee_records", "release_unreleased_product_info"]
+  }
+}

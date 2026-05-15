@@ -1,0 +1,1666 @@
+{
+  "trained_at": "2026-05-12T19:58:56.252202+00:00",
+  "n_train": 5634,
+  "n_test": 1409,
+  "auc": 0.8456689658735694,
+  "churn_rate": 0.2653698707936959,
+  "high_risk_threshold": 70,
+  "synthetic_features": [
+    "slack_sentiment",
+    "qa_score_trend",
+    "sla_breach_count",
+    "csat_14d_change"
+  ],
+  "top_50_at_risk": [
+    {
+      "rank": 1,
+      "client_id": "CLI-0171",
+      "risk_score": 97.80000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 0.9913870096206665,
+          "value": 1.0
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": 0.8890138864517212,
+          "value": -0.298081201412018
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8389007449150085,
+          "value": 1.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.3629080653190613,
+          "value": 0.6526670868487595
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.34112876653671265,
+          "value": 79.5
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "client_id": "CLI-0154",
+      "risk_score": 97.80000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.6692756414413452,
+          "value": -0.8301687893348746
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.771600604057312,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.6257783770561218,
+          "value": 3.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.32793349027633667,
+          "value": 1.0
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.2762015461921692,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "client_id": "CLI-0228",
+      "risk_score": 96.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.7481099367141724,
+          "value": -0.6239420691915569
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.6639739871025085,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.4687223434448242,
+          "value": 104.25
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.24388694763183594,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2289150357246399,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "client_id": "CLI-1138",
+      "risk_score": 96.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.5107450485229492,
+          "value": -0.578087348194278
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7973592281341553,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.41530781984329224,
+          "value": 105.9
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.35659730434417725,
+          "value": 3.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2854872941970825,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "client_id": "CLI-0051",
+      "risk_score": 96.30000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.0954960584640503,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8625652194023132,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.6754147410392761,
+          "value": 3.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.5707215070724487,
+          "value": 102.45
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": -0.33780258893966675,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "client_id": "CLI-1109",
+      "risk_score": 95.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.0739538669586182,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8952152729034424,
+          "value": 1.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.30502063035964966,
+          "value": 0.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.2934957444667816,
+          "value": -0.4868415395295988
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.27894335985183716,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "client_id": "CLI-1083",
+      "risk_score": 95.80000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.2492841482162476,
+          "value": -0.5861093642859819
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.9125835299491882,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.864581823348999,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.5771652460098267,
+          "value": 5.0
+        },
+        {
+          "feature": "TechSupport_No",
+          "shap": 0.2836623787879944,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "client_id": "CLI-1188",
+      "risk_score": 95.5,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8364254832267761,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.6770029067993164,
+          "value": 98.05
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.5263229012489319,
+          "value": -0.5080257344699655
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.41597142815589905,
+          "value": 7.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.3370494246482849,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "client_id": "CLI-0872",
+      "risk_score": 95.30000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.1327844858169556,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.9018714427947998,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.3821205794811249,
+          "value": 3.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.29218247532844543,
+          "value": 1.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.28260064125061035,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "client_id": "CLI-0604",
+      "risk_score": 95.19999694824219,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.8310219645500183,
+          "value": 99.3
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7903385162353516,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.7155419588088989,
+          "value": 3.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.3713706135749817,
+          "value": 9.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.33585843443870544,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "client_id": "CLI-0344",
+      "risk_score": 94.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.0044296979904175,
+          "value": 1.0
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": 0.8739616870880127,
+          "value": -0.47855456712129146
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8031079173088074,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.3446274995803833,
+          "value": 85.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.2786448001861572,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "client_id": "CLI-1120",
+      "risk_score": 94.80000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.4837876558303833,
+          "value": -0.5306653043966707
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.634583592414856,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.4679579734802246,
+          "value": 104.75
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.38982269167900085,
+          "value": -0.1100627084957923
+        },
+        {
+          "feature": "tenure",
+          "shap": -0.357512891292572,
+          "value": 42.0
+        }
+      ]
+    },
+    {
+      "rank": 13,
+      "client_id": "CLI-0987",
+      "risk_score": 94.5999984741211,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "sla_breach_count",
+          "shap": 1.0886883735656738,
+          "value": 5.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7551378607749939,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.6096758246421814,
+          "value": 4.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.24665704369544983,
+          "value": 1.0
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.21555636823177338,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 14,
+      "client_id": "CLI-1221",
+      "risk_score": 94.5,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.2995648384094238,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8267108798027039,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.31237173080444336,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.25652119517326355,
+          "value": 95.45
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.22070878744125366,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 15,
+      "client_id": "CLI-0041",
+      "risk_score": 94.30000305175781,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8197528123855591,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.7667704820632935,
+          "value": 2.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.5472328066825867,
+          "value": 3.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.2663765251636505,
+          "value": 0.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.26331546902656555,
+          "value": 91.45
+        }
+      ]
+    },
+    {
+      "rank": 16,
+      "client_id": "CLI-0733",
+      "risk_score": 93.9000015258789,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.139629602432251,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8815819025039673,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.5767064690589905,
+          "value": 4.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.33172526955604553,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.2727566659450531,
+          "value": 79.15
+        }
+      ]
+    },
+    {
+      "rank": 17,
+      "client_id": "CLI-0341",
+      "risk_score": 93.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "TotalCharges",
+          "shap": 0.9928435683250427,
+          "value": 69.55
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.9157950282096863,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.8732528686523438,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.4524007737636566,
+          "value": 1.0
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": -0.21269488334655762,
+          "value": 0.01050207549366966
+        }
+      ]
+    },
+    {
+      "rank": 18,
+      "client_id": "CLI-0027",
+      "risk_score": 93.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.428581953048706,
+          "value": -0.5921440130704789
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7796750068664551,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.2720717191696167,
+          "value": 102.25
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.26860764622688293,
+          "value": 1.0
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.2683420479297638,
+          "value": -0.4318251351067102
+        }
+      ]
+    },
+    {
+      "rank": 19,
+      "client_id": "CLI-1090",
+      "risk_score": 93.80000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.1065114736557007,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.863297700881958,
+          "value": 1.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.37638044357299805,
+          "value": 0.0
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.3021881580352783,
+          "value": -0.4426832510682323
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.17584426701068878,
+          "value": 95.1
+        }
+      ]
+    },
+    {
+      "rank": 20,
+      "client_id": "CLI-0621",
+      "risk_score": 93.69999694824219,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8199650645256042,
+          "value": 1.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.5039056539535522,
+          "value": -1.5749044855295367
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3879452049732208,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.379608690738678,
+          "value": 8.0
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": 0.2759932279586792,
+          "value": 0.47313791455572135
+        }
+      ]
+    },
+    {
+      "rank": 21,
+      "client_id": "CLI-0882",
+      "risk_score": 93.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.2907462120056152,
+          "value": -0.5924842758876544
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7161515951156616,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.5600287914276123,
+          "value": 3.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.532555878162384,
+          "value": 2.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": -0.4135940372943878,
+          "value": 137.95
+        }
+      ]
+    },
+    {
+      "rank": 22,
+      "client_id": "CLI-0038",
+      "risk_score": 93.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 0.9417514204978943,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.9246988892555237,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.3894796371459961,
+          "value": 74.5
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3244662284851074,
+          "value": 1.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.32047387957572937,
+          "value": -0.2412153161358051
+        }
+      ]
+    },
+    {
+      "rank": 23,
+      "client_id": "CLI-1393",
+      "risk_score": 93.30000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "TotalCharges",
+          "shap": 1.0211313962936401,
+          "value": 69.25
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.9698538780212402,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8831133842468262,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.399410605430603,
+          "value": 1.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": -0.2730545699596405,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 24,
+      "client_id": "CLI-0627",
+      "risk_score": 93.0999984741211,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8352967500686646,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.7598958015441895,
+          "value": 96.6
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.7110573649406433,
+          "value": 3.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.2709876298904419,
+          "value": 0.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.24474568665027618,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 25,
+      "client_id": "CLI-1259",
+      "risk_score": 93.0,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.193415641784668,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.9197500944137573,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.31646060943603516,
+          "value": 77.15
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.31285959482192993,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": -0.29622969031333923,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 26,
+      "client_id": "CLI-1366",
+      "risk_score": 92.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.0978935956954956,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8213194608688354,
+          "value": 1.0
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": 0.451550155878067,
+          "value": -0.33780954533813246
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.3512172996997833,
+          "value": 70.25
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.2645808458328247,
+          "value": 2.0
+        }
+      ]
+    },
+    {
+      "rank": 27,
+      "client_id": "CLI-1289",
+      "risk_score": 92.5999984741211,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "TotalCharges",
+          "shap": 1.0151901245117188,
+          "value": 69.6
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.9124342203140259,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8616122603416443,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": -0.4076422154903412,
+          "value": 0.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3906742334365845,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 28,
+      "client_id": "CLI-0069",
+      "risk_score": 92.5,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.242970585823059,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.856839656829834,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.31510046124458313,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.3053539991378784,
+          "value": 80.05
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": 0.2565588057041168,
+          "value": -0.3389289656391542
+        }
+      ]
+    },
+    {
+      "rank": 29,
+      "client_id": "CLI-0647",
+      "risk_score": 92.5,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8103468418121338,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.5624526739120483,
+          "value": 3.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.4939868450164795,
+          "value": 100.95
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.3234012722969055,
+          "value": 0.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3048175871372223,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 30,
+      "client_id": "CLI-0510",
+      "risk_score": 92.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8534234166145325,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.7616122364997864,
+          "value": 4.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.2834109663963318,
+          "value": 84.6
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.27475500106811523,
+          "value": 0.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.22407035529613495,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 31,
+      "client_id": "CLI-0618",
+      "risk_score": 92.19999694824219,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.1064748764038086,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.9098024368286133,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.33676034212112427,
+          "value": 76.45
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2540036737918854,
+          "value": 1.0
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.2531904876232147,
+          "value": -0.3445266915613816
+        }
+      ]
+    },
+    {
+      "rank": 32,
+      "client_id": "CLI-0940",
+      "risk_score": 92.0,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.117771029472351,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.9064380526542664,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3748766779899597,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.267051637172699,
+          "value": 79.35
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.23804719746112823,
+          "value": -0.7542271571208301
+        }
+      ]
+    },
+    {
+      "rank": 33,
+      "client_id": "CLI-0995",
+      "risk_score": 91.4000015258789,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.853743314743042,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.5224643349647522,
+          "value": 7.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.42216798663139343,
+          "value": 94.1
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.35530027747154236,
+          "value": 1.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.305395245552063,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 34,
+      "client_id": "CLI-0813",
+      "risk_score": 91.30000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 0.947614848613739,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8878526091575623,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.32292595505714417,
+          "value": 1.0
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.3035782277584076,
+          "value": 0.6556495640547366
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.29545190930366516,
+          "value": 75.7
+        }
+      ]
+    },
+    {
+      "rank": 35,
+      "client_id": "CLI-0952",
+      "risk_score": 91.19999694824219,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.1382144689559937,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8992695808410645,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.43823373317718506,
+          "value": 3.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2791087329387665,
+          "value": 1.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": -0.2576269805431366,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 36,
+      "client_id": "CLI-0029",
+      "risk_score": 90.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.9696568846702576,
+          "value": 4.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7819211483001709,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.5976254940032959,
+          "value": 3.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.23680436611175537,
+          "value": 1.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.22840581834316254,
+          "value": -0.6718115512159912
+        }
+      ]
+    },
+    {
+      "rank": 37,
+      "client_id": "CLI-0629",
+      "risk_score": 90.80000305175781,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.1926229000091553,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8704823851585388,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.3735765218734741,
+          "value": 69.9
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2813677191734314,
+          "value": 1.0
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.23371557891368866,
+          "value": -0.263088211971308
+        }
+      ]
+    },
+    {
+      "rank": 38,
+      "client_id": "CLI-0889",
+      "risk_score": 90.5999984741211,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8647512197494507,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.727656900882721,
+          "value": 2.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.3386644721031189,
+          "value": 0.0
+        },
+        {
+          "feature": "SeniorCitizen",
+          "shap": 0.3326854407787323,
+          "value": 1.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.258839875459671,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 39,
+      "client_id": "CLI-1175",
+      "risk_score": 90.0999984741211,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8153104186058044,
+          "value": 1.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.7846593260765076,
+          "value": 99.25
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.4659591317176819,
+          "value": 7.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": -0.3879532814025879,
+          "value": 0.5392220644049339
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3047260344028473,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 40,
+      "client_id": "CLI-1123",
+      "risk_score": 90.0,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8279435038566589,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.8172279000282288,
+          "value": 3.0
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.3115406036376953,
+          "value": 0.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.29732224345207214,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.2929007112979889,
+          "value": 9.0
+        }
+      ]
+    },
+    {
+      "rank": 41,
+      "client_id": "CLI-0740",
+      "risk_score": 89.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.866586446762085,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.805717945098877,
+          "value": 69.1
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.8008860349655151,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.45571890473365784,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": -0.31251060962677,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 42,
+      "client_id": "CLI-1327",
+      "risk_score": 89.9000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.8693047165870667,
+          "value": 96.65
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7451419830322266,
+          "value": 1.0
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.4943666160106659,
+          "value": -1.5565184381432402
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.3368469774723053,
+          "value": 1.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": -0.3219826817512512,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 43,
+      "client_id": "CLI-0830",
+      "risk_score": 89.80000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7840792536735535,
+          "value": 1.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.5411444306373596,
+          "value": 1036.75
+        },
+        {
+          "feature": "slack_sentiment",
+          "shap": 0.37000614404678345,
+          "value": -0.318379570991236
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.2935088872909546,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2823314666748047,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 44,
+      "client_id": "CLI-1222",
+      "risk_score": 89.69999694824219,
+      "actually_churned": false,
+      "top_drivers": [
+        {
+          "feature": "tenure",
+          "shap": 1.1111828088760376,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8924189209938049,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.45910781621932983,
+          "value": 3.0
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 0.38341760635375977,
+          "value": 74.3
+        },
+        {
+          "feature": "PaperlessBilling_No",
+          "shap": -0.2710428535938263,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 45,
+      "client_id": "CLI-0318",
+      "risk_score": 89.69999694824219,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "qa_score_trend",
+          "shap": 1.475893497467041,
+          "value": -0.5753584472709153
+        },
+        {
+          "feature": "TotalCharges",
+          "shap": 1.2493869066238403,
+          "value": 21.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.7680668234825134,
+          "value": 1.0
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.756287693977356,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": -0.4949449300765991,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 46,
+      "client_id": "CLI-1223",
+      "risk_score": 89.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.4176894426345825,
+          "value": -0.5157723424886538
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7745547294616699,
+          "value": 1.0
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.3973805904388428,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.37878185510635376,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": -0.3762426972389221,
+          "value": 23.0
+        }
+      ]
+    },
+    {
+      "rank": 47,
+      "client_id": "CLI-1150",
+      "risk_score": 89.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "csat_14d_change",
+          "shap": 1.4332523345947266,
+          "value": -0.5186933770046973
+        },
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.6376832723617554,
+          "value": 1.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.5720681548118591,
+          "value": 3.0
+        },
+        {
+          "feature": "PaperlessBilling_No",
+          "shap": -0.3179890513420105,
+          "value": 1.0
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.260961651802063,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 48,
+      "client_id": "CLI-0693",
+      "risk_score": 89.4000015258789,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.8602102994918823,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.762286365032196,
+          "value": 3.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": 0.5432053804397583,
+          "value": 3.0
+        },
+        {
+          "feature": "OnlineSecurity_No",
+          "shap": 0.25104087591171265,
+          "value": 1.0
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.24949043989181519,
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "rank": 49,
+      "client_id": "CLI-1164",
+      "risk_score": 89.30000305175781,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7635613083839417,
+          "value": 1.0
+        },
+        {
+          "feature": "tenure",
+          "shap": 0.4493345022201538,
+          "value": 7.0
+        },
+        {
+          "feature": "MonthlyCharges",
+          "shap": 0.4299159348011017,
+          "value": 101.95
+        },
+        {
+          "feature": "MultipleLines_No",
+          "shap": 0.3559349775314331,
+          "value": 0.0
+        },
+        {
+          "feature": "sla_breach_count",
+          "shap": -0.32710039615631104,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "rank": 50,
+      "client_id": "CLI-0743",
+      "risk_score": 88.69999694824219,
+      "actually_churned": true,
+      "top_drivers": [
+        {
+          "feature": "Contract_Month-to-month",
+          "shap": 0.7999787330627441,
+          "value": 1.0
+        },
+        {
+          "feature": "csat_14d_change",
+          "shap": 0.5220693349838257,
+          "value": 0.31947612280899323
+        },
+        {
+          "feature": "qa_score_trend",
+          "shap": 0.39761048555374146,
+          "value": 0.22008013025846074
+        },
+        {
+          "feature": "PaymentMethod_Electronic check",
+          "shap": 0.3214503228664398,
+          "value": 1.0
+        },
+        {
+          "feature": "InternetService_Fiber optic",
+          "shap": 0.2792067527770996,
+          "value": 1.0
+        }
+      ]
+    }
+  ]
+}

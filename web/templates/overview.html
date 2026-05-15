@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}Command Center{% endblock %}
+{% block heading %}Operations Overview{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    Unified client-health view across Slack signals, churn risk, QA scores, code security
+    and the AI service agent. Demo data is open-source (Telco Churn, GoEmotions) or synthetic.
+  </p>
+  <div class="flex flex-wrap items-center gap-2 mt-3">
+    {{ m.tag("LIVE", "green") }}
+    {{ m.tag("Provider · " + provider, "blue") }}
+    {{ m.tag("Model · " + model, "violet") }}
+    {{ m.tag("Sync · " + today, "slate") }}
+  </div>
+{% endblock %}
+
+{% block content %}
+<!-- KPI row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+  {{ m.kpi("Slack — Red channels",
+           kpis.slack_red if kpis.slack_red is not none else "—",
+           (kpis.slack_amber|string) + " amber · " + (kpis.slack_total|string) + " total" if kpis.slack_total else "no data") }}
+  {{ m.kpi("Churn — High-risk clients",
+           kpis.churn_high if kpis.churn_high is not none else "—",
+           ("avg " + ("%.1f"|format(kpis.churn_avg)) + "/100") if kpis.churn_avg is not none else "no data") }}
+  {{ m.kpi("QA — Avg score",
+           ("%.2f"|format(kpis.qa_avg)) if kpis.qa_avg is not none else "—",
+           ((kpis.qa_flagged|string) + " flagged · " + (kpis.qa_total|string) + " evals") if kpis.qa_total else "no data") }}
+  {{ m.kpi("Security — Findings",
+           kpis.sec_total if kpis.sec_total is not none else "—",
+           ((kpis.sec_high|string) + " high severity") if kpis.sec_high is not none else "no data") }}
+</div>
+
+<!-- 14-day trend strip -->
+{{ m.section_title("14-day trend (simulated rollup)") }}
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+  {% for slug, label, color in [
+      ("slack",    "Slack red channels", "#dc2626"),
+      ("churn",    "High-risk clients",  "#4f46e5"),
+      ("qa",       "QA score ×100",      "#059669"),
+      ("security", "Security high-sev",  "#ea580c"),
+  ] %}
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">{{ label }}</div>
+    <div id="trend-{{ slug }}" class="chart" style="height: 110px"></div>
+  </div>
+  {% endfor %}
+</div>
+<script type="application/json" id="trends-data">{{ trends_json|safe }}</script>
+
+<!-- Two-column: agent quick + readiness -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+  <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card lg:col-span-2">
+    <div class="flex items-baseline justify-between mb-2">
+      <h2 class="text-base font-semibold text-gray-900">AI agent · last 5 runs</h2>
+      <a href="/agent" class="text-xs text-brand-700 hover:underline">Open agent →</a>
+    </div>
+    <div class="grid grid-cols-4 gap-3">
+      {{ m.kpi("Total",       kpis.agent_total or "—") }}
+      {{ m.kpi("Resolved",    kpis.agent_resolved or 0) }}
+      {{ m.kpi("Escalated",   kpis.agent_escalated or 0) }}
+      {{ m.kpi("Awaiting",    kpis.agent_waiting or 0) }}
+    </div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card">
+    <h2 class="text-base font-semibold text-gray-900 mb-3">Module readiness</h2>
+    <ul class="space-y-2">
+      {% for m_item in readiness %}
+      <li class="flex items-center justify-between gap-3 text-sm">
+        <div>
+          <div class="font-medium text-gray-900">{{ m_item.name }}</div>
+          <div class="text-[11px] font-mono text-gray-500 break-all">{{ m_item.cmd }}()</div>
+        </div>
+        <div>
+          {% if m_item.ready %}{{ m.tag("READY", "green") }}{% else %}{{ m.tag("PENDING", "amber") }}{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- Client watchlist -->
+{{ m.section_title("Client / channel watchlist (top 25)") }}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+{% for r in watchlist %}
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0 flex-1">
+        <div class="font-semibold text-gray-900 truncate">{{ r.client }}</div>
+        <div class="flex flex-wrap items-center gap-1.5 mt-1">
+          {{ m.tag(r.source, "blue") }}
+          {{ m.health_pill(r.band) }}
+          {{ m.tag(r.extra, r.extra_variant) }}
+        </div>
+        <div class="text-xs text-gray-600 mt-2 line-clamp-2">{{ r.note }}</div>
+      </div>
+      <div class="text-right shrink-0">
+        <div class="text-2xl font-bold text-gray-900 tabular-nums">{{ "%.0f"|format(r.score) }}</div>
+        <div class="text-[10px] uppercase tracking-wider text-gray-500">score</div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="col-span-2">{{ m.empty("Watchlist is empty — no module caches found.") }}</div>
+{% endfor %}
+</div>
+
+<p class="text-xs text-gray-500 text-center mt-8">
+  Built with FastAPI · Plotly · XGBoost + SHAP · Anthropic Claude / DeepSeek · Semgrep.
+  All data is open-source or synthetic.
+</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const trends = JSON.parse(document.getElementById("trends-data").textContent);
+    const baseLayout = {
+      margin: {l: 0, r: 0, t: 4, b: 0},
+      paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+      xaxis: {visible: false}, yaxis: {visible: false},
+      showlegend: false, hovermode: "x",
+    };
+    const colors = {
+      slack: "#dc2626", churn: "#4f46e5", qa: "#059669", security: "#ea580c",
+    };
+    const fills = {
+      slack: "rgba(220,38,38,0.10)", churn: "rgba(79,70,229,0.10)",
+      qa: "rgba(5,150,105,0.10)", security: "rgba(234,88,12,0.10)",
+    };
+    for (const k of Object.keys(trends)) {
+      const series = trends[k];
+      Plotly.newPlot("trend-"+k, [{
+        x: series.map(p => p.date), y: series.map(p => p.value),
+        type: "scatter", mode: "lines", fill: "tozeroy",
+        line: {color: colors[k], width: 2}, fillcolor: fills[k],
+      }], baseLayout, {displayModeBar: false, responsive: true});
+    }
+  });
+</script>
+{% endblock %}

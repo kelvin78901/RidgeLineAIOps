@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}AI Co-Pilot{% endblock %}
+{% block heading %}Dashboard Assistant{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    Ask questions about the current dashboard data. Responses stream from the LLM
+    selected in the sidebar — answers are formatted in Markdown, every conversation
+    is saved server-side, and you can stop generation mid-stream.
+  </p>
+  <div id="active-model-badges" class="flex flex-wrap items-center gap-2 mt-3">
+    <!-- filled by JS -->
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+  <!-- History sidebar -->
+  <aside class="lg:col-span-3 space-y-2">
+    <div class="flex items-center justify-between">
+      <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase">History</div>
+      <button id="new-chat" class="text-xs text-brand-700 hover:underline">+ New chat</button>
+    </div>
+    <div id="conv-list" class="space-y-1 max-h-[420px] overflow-y-auto scrollbar-thin">
+      <div class="text-xs text-gray-400 px-1">loading…</div>
+    </div>
+    <div class="pt-4 border-t border-gray-200 mt-3 space-y-1">
+      <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase mb-2">Try asking</div>
+      {% for q in [
+          "Summarize the dashboard in 5 bullets.",
+          "Which Slack channels are at highest churn risk and why?",
+          "Explain the top SHAP drivers for our highest-risk client.",
+          "Where does the same support reply score very differently across brands?",
+          "What did the LLM catch in the security scan that Semgrep missed?",
+          "How many agent runs were auto-resolved vs escalated, and why?",
+      ] %}
+        <button class="suggest block w-full text-left text-[13px] bg-white border border-gray-200 hover:border-brand-300 rounded-md p-2.5 leading-snug">
+          {{ q }}
+        </button>
+      {% endfor %}
+    </div>
+  </aside>
+
+  <!-- Chat -->
+  <div class="lg:col-span-9 flex flex-col min-h-[640px]">
+    <div id="chat-log" class="flex-1 space-y-2 overflow-y-auto pr-1 scrollbar-thin"></div>
+
+    <form id="chat-form" class="mt-3 flex gap-2">
+      <input id="chat-input" type="text" autocomplete="off"
+             placeholder="Ask about the dashboard…"
+             class="flex-1 border border-gray-300 rounded-lg text-sm px-3 py-2.5 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-200">
+      <button id="chat-send" type="submit"
+              class="bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg px-5 min-w-[80px]">
+        Send
+      </button>
+    </form>
+    <div id="chat-status" class="text-xs text-gray-500 mt-2 min-h-[16px]"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const log = document.getElementById("chat-log");
+  const form = document.getElementById("chat-form");
+  const input = document.getElementById("chat-input");
+  const send = document.getElementById("chat-send");
+  const status = document.getElementById("chat-status");
+  const newBtn = document.getElementById("new-chat");
+  const convListEl = document.getElementById("conv-list");
+  const modelBadges = document.getElementById("active-model-badges");
+
+  // ---- model badges sync with sidebar picker
+  function renderBadges() {
+    if (!window.RG?.getModelChoice) return;
+    const c = window.RG.getModelChoice();
+    modelBadges.innerHTML = `
+      <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border whitespace-nowrap bg-brand-50 text-brand-700 border-brand-200">Provider · ${c.provider}</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border whitespace-nowrap bg-violet-50 text-violet-700 border-violet-200">Model · ${c.model}</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border whitespace-nowrap bg-gray-100 text-gray-700 border-gray-200">SSE streaming</span>
+    `;
+  }
+  // Wait briefly for model picker to populate
+  setTimeout(renderBadges, 200);
+  window.addEventListener("rg:model-changed", renderBadges);
+
+  // ---- state
+  let conversationId = crypto.randomUUID();
+  let history = [];           // [{role:"user"|"assistant", content:string}]
+  let activeStream = null;    // current EventSource
+  let streaming = false;
+  let activeConvId = null;
+
+  function setSendMode(mode /* "send" | "stop" */) {
+    if (mode === "stop") {
+      send.textContent = "Stop";
+      send.classList.remove("bg-brand-600","hover:bg-brand-700");
+      send.classList.add("bg-red-600","hover:bg-red-700");
+    } else {
+      send.textContent = "Send";
+      send.classList.add("bg-brand-600","hover:bg-brand-700");
+      send.classList.remove("bg-red-600","hover:bg-red-700");
+    }
+  }
+
+  function addUserBubble(text) {
+    const div = document.createElement("div");
+    div.className = "bubble customer";
+    div.innerHTML = `<div class="who">You</div><div class="body">${window.RG.escapeHtml(text)}</div>`;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+  function addAssistantBubble(initialText = "") {
+    const div = document.createElement("div");
+    div.className = "bubble";
+    div.innerHTML = `<div class="who">Assistant</div><div class="body markdown"></div>`;
+    log.appendChild(div);
+    const body = div.querySelector(".body");
+    if (initialText) body.innerHTML = window.RG.renderMarkdown(initialText);
+    log.scrollTop = log.scrollHeight;
+    return body;
+  }
+  function renderInto(el, text, withCursor) {
+    const html = window.RG.renderMarkdown(text);
+    if (withCursor) {
+      // Append a blinking caret inside the last paragraph if any
+      el.innerHTML = html + '<span class="cursor"></span>';
+    } else {
+      el.innerHTML = html;
+    }
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function clearChat() {
+    log.innerHTML = "";
+    history = [];
+  }
+
+  // ---- history loading
+  async function loadConversationList(highlightId) {
+    try {
+      const r = await fetch("/api/assistant/conversations");
+      const d = await r.json();
+      if (!d.conversations.length) {
+        convListEl.innerHTML = '<div class="text-xs text-gray-400 px-1">No previous chats yet.</div>';
+        return;
+      }
+      convListEl.innerHTML = "";
+      for (const c of d.conversations) {
+        const item = document.createElement("div");
+        item.className = "conv-item" + (c.id === highlightId ? " active" : "");
+        item.dataset.id = c.id;
+        const dt = new Date(c.updated_at + (c.updated_at.endsWith("Z") ? "" : "Z"));
+        const when = dt.toLocaleString(undefined, {month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"});
+        item.innerHTML = `
+          <span class="del" title="delete">×</span>
+          <div class="truncate font-medium">${window.RG.escapeHtml(c.title || "(untitled)")}</div>
+          <div class="meta">${when} · ${c.n_messages} msg · ${window.RG.escapeHtml(c.model || "—")}</div>
+        `;
+        item.addEventListener("click", (ev) => {
+          if (ev.target.classList.contains("del")) {
+            ev.stopPropagation();
+            if (confirm("Delete this conversation?")) {
+              fetch(`/api/assistant/conversations/${c.id}`, {method: "DELETE"})
+                .then(() => loadConversationList());
+            }
+            return;
+          }
+          loadConversation(c.id);
+        });
+        convListEl.appendChild(item);
+      }
+    } catch (e) {
+      convListEl.innerHTML = `<div class="text-xs text-red-500 px-1">history load failed: ${e}</div>`;
+    }
+  }
+
+  async function loadConversation(id) {
+    if (streaming) stopStream();
+    try {
+      const r = await fetch(`/api/assistant/conversations/${id}`);
+      const c = await r.json();
+      clearChat();
+      conversationId = c.id;
+      activeConvId = c.id;
+      for (const msg of c.messages) {
+        if (msg.role === "user") {
+          addUserBubble(msg.content);
+        } else {
+          const target = addAssistantBubble();
+          renderInto(target, msg.content, false);
+        }
+      }
+      history = c.messages.slice();
+      loadConversationList(c.id);
+    } catch (e) {
+      console.warn("loadConversation failed", e);
+    }
+  }
+
+  async function persistConversation() {
+    if (!history.length) return;
+    const firstUser = history.find(m => m.role === "user");
+    const title = firstUser ? firstUser.content.slice(0, 60) : "(empty)";
+    const choice = window.RG?.getModelChoice?.() || {provider:"", model:""};
+    const form = new FormData();
+    form.append("id", conversationId);
+    form.append("title", title);
+    form.append("provider", choice.provider);
+    form.append("model", choice.model);
+    form.append("messages", JSON.stringify(history));
+    try {
+      await fetch("/api/assistant/save", {method: "POST", body: form});
+      activeConvId = conversationId;
+      loadConversationList(conversationId);
+    } catch (e) {
+      console.warn("save failed", e);
+    }
+  }
+
+  function stopStream() {
+    if (activeStream) {
+      try { activeStream.close(); } catch (e) {}
+      activeStream = null;
+    }
+    streaming = false;
+    setSendMode("send");
+    status.textContent = "";
+  }
+
+  function ask(question) {
+    if (!question || streaming) return;
+    addUserBubble(question);
+    history.push({role: "user", content: question});
+
+    const target = addAssistantBubble("");
+    let buf = "";
+
+    streaming = true;
+    setSendMode("stop");
+    status.textContent = "streaming…";
+
+    const choice = window.RG?.getModelChoice?.() || {};
+    const params = new URLSearchParams({
+      message: question,
+      history: JSON.stringify(history.slice(0, -1)),
+    });
+    if (choice.provider) params.set("provider", choice.provider);
+    if (choice.model)    params.set("model",    choice.model);
+
+    const es = new EventSource("/api/assistant/chat_stream?" + params.toString());
+    activeStream = es;
+
+    es.addEventListener("meta", (e) => {
+      const d = JSON.parse(e.data);
+      status.textContent = `streaming via ${d.provider} · ${d.model}`;
+    });
+    es.addEventListener("delta", (e) => {
+      const d = JSON.parse(e.data);
+      buf += d.text;
+      renderInto(target, buf, true);
+    });
+    es.addEventListener("done", () => {
+      renderInto(target, buf, false);
+      history.push({role: "assistant", content: buf});
+      persistConversation();
+      stopStream();
+    });
+    es.addEventListener("error", (e) => {
+      let msg = "(connection lost)";
+      try { msg = JSON.parse(e.data || "{}").message || msg; } catch {}
+      if (buf) {
+        // partial response — keep what we have
+        renderInto(target, buf + "\n\n*(interrupted — " + msg + ")*", false);
+      } else {
+        target.innerHTML = `<span class="text-red-600">Error: ${window.RG.escapeHtml(msg)}</span>`;
+      }
+      stopStream();
+    });
+  }
+
+  send.addEventListener("click", (e) => {
+    if (streaming) { e.preventDefault(); stopStream(); return; }
+  });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (streaming) { stopStream(); return; }
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = "";
+    ask(q);
+  });
+
+  newBtn.addEventListener("click", () => {
+    if (streaming) stopStream();
+    conversationId = crypto.randomUUID();
+    activeConvId = null;
+    clearChat();
+    loadConversationList(null);
+    input.focus();
+  });
+
+  document.querySelectorAll(".suggest").forEach(btn => {
+    btn.addEventListener("click", () => {
+      input.value = btn.textContent.trim();
+      form.dispatchEvent(new Event("submit"));
+    });
+  });
+
+  loadConversationList(null);
+});
+</script>
+{% endblock %}

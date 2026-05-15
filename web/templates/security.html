@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}Module 4 · AppSec{% endblock %}
+{% block heading %}Code Security Scanner{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    Two-layer pipeline on typical "vibe-coded" Python. Semgrep finds known patterns
+    (injection, secrets, debug mode); the LLM finds business-logic and auth issues
+    static analysis usually misses.
+  </p>
+{% endblock %}
+
+{% block content %}
+{% if not has_data %}
+  {{ m.empty("Security scan not run yet.",
+             "python -c &quot;from core.security_scanner import scan_all; scan_all()&quot;") }}
+{% else %}
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+  {{ m.kpi("Semgrep findings",   report.totals.semgrep) }}
+  {{ m.kpi("Semgrep high-sev",   report.totals.semgrep_high) }}
+  {{ m.kpi(provider_label ~ " findings",
+           report.totals.llm if report.totals.llm is defined else report.totals.claude) }}
+  {{ m.kpi(provider_label ~ " high-sev",
+           report.totals.llm_high if report.totals.llm_high is defined else report.totals.claude_high) }}
+  {{ m.kpi("Combined total",
+           (report.totals.semgrep|int) + ((report.totals.llm|int) if report.totals.llm is defined else (report.totals.claude|int))) }}
+</div>
+
+<div class="flex flex-wrap items-center gap-2 mt-3">
+  {{ m.tag("scan target · " ~ report.target, "blue") }}
+  {{ m.tag("semgrep · " ~ ("on" if report.semgrep_available else "off"), "slate") }}
+  {{ m.tag(provider_label ~ " · " ~ model_label, "violet") }}
+</div>
+
+<!-- Filter -->
+<div class="mt-5 bg-white border border-gray-200 rounded-lg p-3 shadow-card flex flex-wrap items-end gap-3">
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Severity</label>
+    <select id="f-sev" multiple size="4" class="border border-gray-300 rounded-md text-sm px-2 py-1 w-44">
+      <option value="high"    selected>high</option>
+      <option value="error"   selected>error</option>
+      <option value="medium"  selected>medium</option>
+      <option value="warning" selected>warning</option>
+      <option value="low"     selected>low</option>
+      <option value="info"    selected>info</option>
+    </select>
+  </div>
+  <div class="flex-1 min-w-[200px]">
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Search</label>
+    <input id="f-search" type="search" placeholder="rule, issue, category…"
+           class="border border-gray-300 rounded-md text-sm px-2 py-1 w-full">
+  </div>
+</div>
+
+<!-- Severity bar -->
+{{ m.section_title("Severity distribution") }}
+<div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+  <div id="chart-sev" class="chart" style="height: 240px"></div>
+</div>
+
+<!-- Side by side -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
+  <div>
+    {{ m.section_title("Semgrep · static analysis") }}
+    <div class="space-y-2">
+      {% for f in semgrep %}
+      <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card finding-row"
+           data-sev="{{ f.sev_norm }}"
+           data-text="{{ ((f.rule_short or '') ~ ' ' ~ (f.message or ''))|lower }}">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="font-mono text-xs text-gray-900">{{ f.rule_short }}</div>
+            <div class="text-[11px] text-gray-500">line {{ f.line }}</div>
+          </div>
+          {% set v = "red" if f.sev_norm in ("high","error") else "amber" if f.sev_norm in ("medium","warning") else "slate" %}
+          {{ m.tag(f.sev_norm|upper, v) }}
+        </div>
+        <div class="text-sm text-gray-700 mt-2">{{ f.message }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div>
+    {{ m.section_title(provider_label ~ " · semantic review") }}
+    {% if report.llm_error or report.claude_error %}
+      <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+        {{ report.llm_error or report.claude_error }}
+      </div>
+    {% endif %}
+    <div class="space-y-2">
+      {% for f in llm %}
+      <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card finding-row"
+           data-sev="{{ f.sev_norm }}"
+           data-text="{{ ((f.category or '') ~ ' ' ~ (f.issue or '') ~ ' ' ~ (f.fix or ''))|lower }}">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="font-semibold text-gray-900">{{ f.category }}</div>
+            <div class="text-[11px] text-gray-500">line {{ f.line }}</div>
+          </div>
+          {% set v = "red" if f.sev_norm == "high" else "amber" if f.sev_norm == "medium" else "slate" %}
+          {{ m.tag(f.sev_norm|upper, v) }}
+        </div>
+        <div class="text-sm text-gray-700 mt-2">{{ f.issue }}</div>
+        <div class="text-xs text-gray-600 mt-2"><span class="font-semibold">Fix:</span> {{ f.fix }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Source viewer -->
+{{ m.section_title("Source · " ~ report.target) }}
+<pre class="code-source"><code>{% for line in code_text.splitlines() %}<span class="ln">{{ loop.index }}</span>{{ line }}
+{% endfor %}</code></pre>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Severity stacked bar
+  const sg = Array.from(document.querySelectorAll("[data-sev]")).filter(el => el.closest(".lg\\:grid-cols-2 > div:first-child"));
+  // simpler: count from server-rendered cards
+  const sgRows = document.querySelectorAll("#chart-sev"); // placeholder
+  // Build counts from DOM data attributes
+  const countsByScanner = {Semgrep: {}, LLM: {}};
+  document.querySelectorAll(".finding-row").forEach(row => {
+    // determine which scanner column it belongs to
+    const inSemgrep = row.closest(".lg\\:grid-cols-2 > div:first-child") !== null;
+    const scanner = inSemgrep ? "Semgrep" : "LLM";
+    const sev = (row.dataset.sev || "info").toUpperCase();
+    countsByScanner[scanner][sev] = (countsByScanner[scanner][sev]||0) + 1;
+  });
+  const allSevs = Array.from(new Set(
+    Object.values(countsByScanner).flatMap(o => Object.keys(o))
+  ));
+  const sevColors = {HIGH:"#dc2626", ERROR:"#dc2626", MEDIUM:"#ea580c", WARNING:"#ea580c", LOW:"#059669", INFO:"#9ca3af"};
+  const traces = allSevs.map(sev => ({
+    type:"bar", name: sev,
+    x: ["Semgrep","LLM"],
+    y: ["Semgrep","LLM"].map(s => countsByScanner[s][sev] || 0),
+    marker: {color: sevColors[sev] || "#9ca3af"},
+    text: ["Semgrep","LLM"].map(s => countsByScanner[s][sev] || 0),
+  }));
+  Plotly.newPlot("chart-sev", traces, {
+    margin:{l:40,r:10,t:10,b:30}, barmode:"stack",
+    plot_bgcolor:"transparent", paper_bgcolor:"transparent",
+    legend:{orientation:"h", y:1.1, x:0.5, xanchor:"center"},
+  }, {displayModeBar:false, responsive:true});
+
+  // Filtering
+  const fS = document.getElementById("f-sev");
+  const fQ = document.getElementById("f-search");
+  function getMulti(el) { return Array.from(el.selectedOptions).map(o=>o.value); }
+  function apply() {
+    const sevs = getMulti(fS);
+    const q = fQ.value.trim().toLowerCase();
+    document.querySelectorAll(".finding-row").forEach(row => {
+      const ok = sevs.includes(row.dataset.sev)
+              && (!q || row.dataset.text.includes(q));
+      row.style.display = ok ? "" : "none";
+    });
+  }
+  [fS, fQ].forEach(el => el.addEventListener("input", apply));
+});
+</script>
+{% endblock %}

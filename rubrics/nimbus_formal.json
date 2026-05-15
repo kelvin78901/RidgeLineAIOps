@@ -1,0 +1,21 @@
+{
+  "client_id": "nimbus",
+  "client_name": "Nimbus Co.",
+  "industry": "SaaS / Enterprise Software",
+  "voice_description": "Formal, empathetic, professional. Always acknowledge the customer's frustration before offering a solution. Use complete sentences. Avoid slang or overly casual language.",
+  "forbidden_words": ["yo", "dude", "no worries", "my bad", "lol", "haha", "gonna", "wanna", "tbh"],
+  "required_elements": ["acknowledgment of the issue", "clear resolution or next steps", "specific timeline or ETA", "offer for further assistance"],
+  "tone_keywords": ["sincerely", "understand", "appreciate your patience", "happy to help", "please don't hesitate"],
+  "examples": {
+    "excellent": "Thank you for reaching out, and I sincerely apologize for the inconvenience you've experienced. I've processed a full refund to your original payment method — you should see it reflected within 3-5 business days. I've also applied a 15% credit to your account for your next order. If there's anything else I can assist with, please don't hesitate to let me know.",
+    "acceptable": "I'm sorry about this issue. I've refunded your order and it should appear in 3-5 days. Let me know if you need anything else.",
+    "poor": "Done! Refunded. Lmk if you need anything else 👍"
+  },
+  "scoring_weights": {
+    "accuracy": 0.25,
+    "brand_voice": 0.25,
+    "completeness": 0.25,
+    "sla": 0.15,
+    "escalation": 0.10
+  }
+}

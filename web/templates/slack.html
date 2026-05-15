@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}Module 1 · Channel health{% endblock %}
+{% block heading %}Slack Intelligence Hub{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    Real Reddit messages (Google GoEmotions) partitioned into 50 simulated client channels.
+    Each channel scored by an LLM on satisfaction, urgency, churn signal and tone trajectory.
+  </p>
+{% endblock %}
+
+{% block content %}
+{% if not has_results %}
+  {{ m.empty("LLM scoring not run yet.",
+             "python -c &quot;from core.slack_analyzer import batch_analyze; batch_analyze()&quot;") }}
+{% else %}
+
+<!-- KPI row -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+  {{ m.kpi("Red",    kpis.red) }}
+  {{ m.kpi("Amber",  kpis.amber) }}
+  {{ m.kpi("Green",  kpis.green) }}
+  {{ m.kpi("Likely-churn signal", kpis.likely) }}
+  {{ m.kpi("Avg satisfaction", "%.2f"|format(kpis.avg_sat) + " / 5") }}
+</div>
+
+<!-- Filter bar -->
+<div class="mt-5 bg-white border border-gray-200 rounded-lg p-3 shadow-card flex flex-wrap items-end gap-3">
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Health</label>
+    <select id="f-health" multiple class="border border-gray-300 rounded-md text-sm px-2 py-1 w-32" size="3">
+      <option value="red" selected>red</option>
+      <option value="yellow" selected>amber</option>
+      <option value="green" selected>green</option>
+    </select>
+  </div>
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Churn signal</label>
+    <select id="f-churn" multiple class="border border-gray-300 rounded-md text-sm px-2 py-1 w-32" size="3">
+      <option value="likely" selected>likely</option>
+      <option value="possible" selected>possible</option>
+      <option value="none" selected>none</option>
+    </select>
+  </div>
+  <div>
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Min satisfaction</label>
+    <input id="f-sat" type="range" min="1" max="5" value="1" class="w-32">
+    <span id="f-sat-val" class="text-sm font-medium ml-2 tabular-nums">1</span>
+  </div>
+  <div class="flex-1 min-w-[180px]">
+    <label class="block text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-1">Search</label>
+    <input id="f-search" type="search" placeholder="channel or summary…"
+           class="border border-gray-300 rounded-md text-sm px-2 py-1 w-full">
+  </div>
+</div>
+
+<!-- Charts -->
+{{ m.section_title("Distribution") }}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Health bands</div>
+    <div id="chart-health" class="chart" style="height: 240px"></div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Satisfaction × urgency (bubble = unanswered)</div>
+    <div id="chart-scatter" class="chart" style="height: 240px"></div>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+    <div class="text-[11px] font-medium text-gray-500 mb-1">Tone trajectory mix</div>
+    <div id="chart-tone" class="chart" style="height: 240px"></div>
+  </div>
+</div>
+
+<!-- Red channel cards -->
+{{ m.section_title("Needs attention now") }}
+<div id="red-cards" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+  {% for c in channels if c.health == "red" %}
+  <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-card channel-row"
+       data-health="{{ c.health }}"
+       data-churn="{{ c.churn_signal }}"
+       data-sat="{{ c.satisfaction }}"
+       data-text="{{ (c.channel_id ~ ' ' ~ c.summary)|lower }}">
+    <div class="flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="font-semibold text-gray-900 truncate">{{ c.channel_id }}</div>
+        <div class="text-xs text-gray-500">{{ c.client_name }}</div>
+      </div>
+      {{ m.health_pill(c.health) }}
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5 mt-2">
+      {{ m.tag("sat " ~ c.satisfaction ~ "/5", "blue") }}
+      {{ m.tag("urgency " ~ c.urgency ~ "/5", "orange") }}
+      {{ m.tag("churn: " ~ c.churn_signal, ("red" if c.churn_signal=="likely" else "amber" if c.churn_signal=="possible" else "slate")) }}
+      {{ m.tag("tone: " ~ c.tone_trajectory, ("red" if c.tone_trajectory=="deteriorating" else "green" if c.tone_trajectory=="improving" else "slate")) }}
+    </div>
+    <div class="text-sm text-gray-700 mt-2">{{ c.summary }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Detail table -->
+{{ m.section_title("All channels") }}
+<div class="overflow-x-auto">
+<table class="dt" id="channel-table">
+  <thead>
+    <tr><th>Channel</th><th>Client</th><th>Health</th><th class="num">Sat</th><th class="num">Urg</th>
+        <th>Churn</th><th>Tone</th><th class="num">Unanswered</th><th class="num">GT sentiment</th><th>Summary</th></tr>
+  </thead>
+  <tbody>
+    {% for c in channels %}
+    <tr class="channel-row"
+        data-health="{{ c.health }}"
+        data-churn="{{ c.churn_signal }}"
+        data-sat="{{ c.satisfaction }}"
+        data-text="{{ (c.channel_id ~ ' ' ~ c.summary)|lower }}">
+      <td class="font-mono text-xs">{{ c.channel_id }}</td>
+      <td>{{ c.client_name }}</td>
+      <td>{{ m.health_pill(c.health) }}</td>
+      <td class="num">{{ c.satisfaction }}</td>
+      <td class="num">{{ c.urgency }}</td>
+      <td>{{ c.churn_signal }}</td>
+      <td>{{ c.tone_trajectory }}</td>
+      <td class="num">{{ c.unanswered_count }}</td>
+      <td class="num">{{ "%+.2f"|format(c.ground_truth_sentiment or 0) }}</td>
+      <td class="text-xs text-gray-600">{{ c.summary }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<script type="application/json" id="channels-data">{{ channels_json|safe }}</script>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const data = JSON.parse(document.getElementById("channels-data")?.textContent || "[]");
+  if (!data.length) return;
+
+  // Health bar chart
+  const counts = {green:0, yellow:0, red:0};
+  data.forEach(c => counts[c.health] = (counts[c.health]||0)+1);
+  Plotly.newPlot("chart-health", [{
+    type:"bar",
+    x: ["green","amber","red"],
+    y: [counts.green, counts.yellow, counts.red],
+    marker: {color: ["#059669", "#ea580c", "#dc2626"]},
+    text: [counts.green, counts.yellow, counts.red],
+    textposition: "outside",
+  }], {margin:{l:30,r:10,t:10,b:30}, plot_bgcolor:"transparent", paper_bgcolor:"transparent"},
+     {displayModeBar:false, responsive:true});
+
+  // Scatter
+  const colorMap = {green:"#059669", yellow:"#ea580c", red:"#dc2626"};
+  Plotly.newPlot("chart-scatter", [{
+    type:"scatter", mode:"markers",
+    x: data.map(c => c.satisfaction),
+    y: data.map(c => c.urgency),
+    marker: {
+      color: data.map(c => colorMap[c.health]),
+      size: data.map(c => 6 + (c.unanswered_count||0)*1.6),
+      opacity: 0.7,
+      line: {width:1, color:"rgba(15,23,42,0.2)"},
+    },
+    text: data.map(c => `${c.channel_id}<br>${c.summary}`),
+    hovertemplate: "%{text}<extra></extra>",
+  }], {
+    margin:{l:30,r:10,t:10,b:30},
+    plot_bgcolor:"transparent", paper_bgcolor:"transparent",
+    xaxis:{title:"satisfaction", range:[0.5, 5.5]},
+    yaxis:{title:"urgency", range:[0.5, 5.5]},
+  }, {displayModeBar:false, responsive:true});
+
+  // Tone pie
+  const tones = {};
+  data.forEach(c => tones[c.tone_trajectory] = (tones[c.tone_trajectory]||0)+1);
+  Plotly.newPlot("chart-tone", [{
+    type:"pie", labels: Object.keys(tones), values: Object.values(tones),
+    marker: {colors:["#059669","#9ca3af","#dc2626","#4f46e5"]},
+    textinfo:"label+percent", hole: 0.45,
+  }], {margin:{l:10,r:10,t:10,b:10}, plot_bgcolor:"transparent", paper_bgcolor:"transparent",
+       showlegend:false},
+     {displayModeBar:false, responsive:true});
+
+  // Filtering
+  const fHealth = document.getElementById("f-health");
+  const fChurn  = document.getElementById("f-churn");
+  const fSat    = document.getElementById("f-sat");
+  const fSatVal = document.getElementById("f-sat-val");
+  const fSearch = document.getElementById("f-search");
+
+  function getMulti(el) { return Array.from(el.selectedOptions).map(o => o.value); }
+  function applyFilter() {
+    const heals = getMulti(fHealth);
+    const churns = getMulti(fChurn);
+    const minSat = parseInt(fSat.value);
+    fSatVal.textContent = minSat;
+    const q = fSearch.value.trim().toLowerCase();
+    document.querySelectorAll(".channel-row").forEach(row => {
+      const ok = heals.includes(row.dataset.health)
+              && churns.includes(row.dataset.churn)
+              && parseInt(row.dataset.sat) >= minSat
+              && (!q || row.dataset.text.includes(q));
+      row.style.display = ok ? "" : "none";
+    });
+  }
+  [fHealth, fChurn, fSat, fSearch].forEach(el => el.addEventListener("input", applyFilter));
+});
+</script>
+{% endblock %}

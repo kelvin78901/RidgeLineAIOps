@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+
+{% block crumb %}Module 5 · Bounded autonomy{% endblock %}
+{% block heading %}AI Service Agent{% endblock %}
+{% block subtitle %}
+  <p class="text-sm text-gray-600 mt-2 max-w-3xl">
+    An LLM agent handles customer requests using a scoped tool catalog. Policy caps
+    are enforced server-side — out-of-scope asks are escalated, in-scope work is
+    archived for compliance.
+  </p>
+{% endblock %}
+
+{% block content %}
+{% if not has_data %}
+  {{ m.empty("Agent scenarios not yet cached.",
+             "python -c &quot;from core.agent_simulator import precompute_scenarios; precompute_scenarios()&quot;") }}
+{% else %}
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+  {{ m.kpi("Scenarios run",     kpis.total) }}
+  {{ m.kpi("Auto-resolved",     kpis.resolved, "%.0f%%"|format(100*kpis.auto_pct)) }}
+  {{ m.kpi("Escalated to human", kpis.escalated) }}
+  {{ m.kpi("Awaiting customer", kpis.waiting) }}
+  {{ m.kpi("Avg turns", "%.1f"|format(kpis.avg_turns)) }}
+</div>
+
+<div class="flex flex-wrap items-center gap-2 mt-3">
+  {{ m.tag("Refund cap $500", "slate") }}
+  {{ m.tag("Discount cap 15%", "slate") }}
+  {{ m.tag("Blocked: account-delete · PII share", "red") }}
+</div>
+
+<!-- Two-column: scenario list + transcript -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+  <!-- Scenario list -->
+  <div class="lg:col-span-1 space-y-2">
+    <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase mb-2">Preset scenarios</div>
+    {% for s in scenarios %}
+      {% set is_active = s.id == active_scenario.id %}
+      <a href="/agent?scenario={{ s.id }}"
+         class="block bg-white border rounded-lg p-3 shadow-card hover:border-brand-300
+                {% if is_active %}border-brand-500 ring-2 ring-brand-100{% else %}border-gray-200{% endif %}">
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <div class="text-xs font-mono text-gray-500">{{ s.id }}</div>
+            <div class="text-sm font-medium text-gray-900 line-clamp-2">{{ s.label }}</div>
+          </div>
+          <div class="shrink-0">
+            {% set st = s.result.status %}
+            {% if st == "resolved" %}{{ m.tag("RESOLVED","green") }}
+            {% elif st == "escalated" %}{{ m.tag("ESCALATED","red") }}
+            {% elif st == "ended_no_action" %}{{ m.tag("WAITING","amber") }}
+            {% else %}{{ m.tag(st|upper,"slate") }}{% endif %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+
+    <div class="mt-6 bg-white border border-gray-200 rounded-lg p-3 shadow-card">
+      <div class="text-[11px] font-semibold tracking-widest text-gray-500 uppercase mb-2">Try your own message</div>
+      <textarea id="live-msg" rows="3"
+                placeholder="e.g. I need help with order ORD-3344, eve@example.com"
+                class="w-full border border-gray-300 rounded-md text-sm p-2"></textarea>
+      <button id="live-go"
+              class="mt-2 w-full bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-md py-2">
+        Run agent live (streaming)
+      </button>
+      <div id="live-status" class="text-xs text-gray-500 mt-2"></div>
+    </div>
+  </div>
+
+  <!-- Transcript -->
+  <div class="lg:col-span-2">
+    <div id="transcript-host">
+      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card mb-3">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <div class="min-w-0">
+            <div class="text-xs font-mono text-gray-500">{{ active_scenario.id }}</div>
+            <div class="font-semibold text-gray-900">{{ active_scenario.label }}</div>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            {% set st = active_scenario.result.status %}
+            {% if st == "resolved" %}{{ m.tag("RESOLVED","green") }}
+            {% elif st == "escalated" %}{{ m.tag("ESCALATED","red") }}
+            {% elif st == "ended_no_action" %}{{ m.tag("WAITING","amber") }}
+            {% else %}{{ m.tag(st|upper,"slate") }}{% endif %}
+            {{ m.tag(active_scenario.result.turns ~ " turns", "blue") }}
+          </div>
+        </div>
+        <div class="text-sm text-gray-600 mt-2">
+          <span class="font-medium">Expectation:</span> {{ active_scenario.expectation }}
+        </div>
+      </div>
+
+      <div id="transcript" class="space-y-2">
+        {% for entry in active_scenario.result.transcript %}
+          {% if entry.role == "customer" %}
+            <div class="bubble customer">
+              <div class="who">Customer</div>
+              <div>{{ entry.text }}</div>
+            </div>
+          {% elif entry.role == "agent" %}
+            <div class="bubble">
+              <div class="who">Agent</div>
+              <div>{{ entry.text }}</div>
+            </div>
+          {% elif entry.role == "tool" %}
+            {% set ok = entry.result.status != "permission_denied" %}
+            <details class="tool" {% if not ok %}open{% endif %}>
+              <summary>
+                <span><span class="font-mono">{{ entry.tool }}</span></span>
+                <span>{% if ok %}{{ m.tag("OK","green") }}{% else %}{{ m.tag("DENIED","red") }}{% endif %}</span>
+              </summary>
+              <div class="tool-body">
+                <div>
+                  <div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-1">Arguments</div>
+                  <pre>{{ entry.input|tojson(indent=2) }}</pre>
+                </div>
+                <div>
+                  <div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-1">Result</div>
+                  <pre>{{ entry.result|tojson(indent=2) }}</pre>
+                </div>
+              </div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Archive table -->
+{{ m.section_title("Archive & escalations") }}
+<div class="overflow-x-auto">
+<table class="dt">
+  <thead><tr>
+    <th>Ticket</th><th>Source</th><th>Status</th><th class="num">Turns</th>
+    <th>Category</th><th>Priority</th><th>Summary</th>
+  </tr></thead>
+  <tbody>
+    {% for t in archive.tickets %}
+      {% set rec = t.archive or t.escalation or {} %}
+      <tr>
+        <td class="font-mono text-xs">{{ t.ticket_id }}</td>
+        <td>{{ t.scenario_id }}</td>
+        <td>
+          {% if t.status == "resolved" %}{{ m.tag("RESOLVED","green") }}
+          {% elif t.status == "escalated" %}{{ m.tag("ESCALATED","red") }}
+          {% else %}{{ m.tag(t.status|upper, "amber") }}{% endif %}
+        </td>
+        <td class="num">{{ t.turns }}</td>
+        <td>{{ rec.get("category","-") }}</td>
+        <td>{{ rec.get("priority","-") }}</td>
+        <td class="text-xs text-gray-600">{{ rec.get("summary","-") }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<!-- Policy + tools -->
+{{ m.section_title("Tool catalog (server-enforced)") }}
+<div class="overflow-x-auto">
+<table class="dt">
+  <thead><tr><th>Tool</th><th>Writes?</th><th>Description</th></tr></thead>
+  <tbody>
+  {% for t in tools %}
+    <tr>
+      <td class="font-mono text-xs">{{ t.name }}</td>
+      <td>
+        {% if t.name in ("issue_refund","apply_discount_code","update_shipping_address","escalate_to_human","archive_conversation") %}
+          {{ m.tag("WRITE","amber") }}
+        {% else %}
+          {{ m.tag("READ","slate") }}
+        {% endif %}
+      </td>
+      <td class="text-xs text-gray-700">{{ t.description }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const goBtn = document.getElementById("live-go");
+  const msgEl = document.getElementById("live-msg");
+  const status = document.getElementById("live-status");
+  const transcriptHost = document.getElementById("transcript-host");
+
+  function tagHTML(label, variant) {
+    const palette = {
+      red:"bg-red-50 text-red-700 border-red-200",
+      amber:"bg-amber-50 text-amber-700 border-amber-200",
+      green:"bg-emerald-50 text-emerald-700 border-emerald-200",
+      blue:"bg-brand-50 text-brand-700 border-brand-200",
+      slate:"bg-gray-100 text-gray-700 border-gray-200",
+    };
+    return `<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border whitespace-nowrap tabular-nums ${palette[variant]||palette.slate}">${label}</span>`;
+  }
+  function esc(s) { return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  goBtn?.addEventListener("click", () => {
+    const msg = msgEl.value.trim();
+    if (!msg) return;
+    transcriptHost.innerHTML = `
+      <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-card mb-3">
+        <div class="flex items-center justify-between gap-3">
+          <div class="font-semibold text-gray-900">Live conversation</div>
+          ${tagHTML("RUNNING…","amber")}
+        </div>
+      </div>
+      <div id="transcript" class="space-y-2"></div>
+    `;
+    status.textContent = "streaming…";
+    goBtn.disabled = true;
+
+    const transcript = document.getElementById("transcript");
+    const es = new EventSource("/api/agent/run_stream?message=" + encodeURIComponent(msg));
+
+    es.addEventListener("customer", (e) => {
+      const d = JSON.parse(e.data);
+      transcript.insertAdjacentHTML("beforeend", `
+        <div class="bubble customer"><div class="who">Customer</div><div>${esc(d.text)}</div></div>
+      `);
+    });
+    es.addEventListener("agent", (e) => {
+      const d = JSON.parse(e.data);
+      transcript.insertAdjacentHTML("beforeend", `
+        <div class="bubble"><div class="who">Agent</div><div>${esc(d.text)}</div></div>
+      `);
+    });
+    es.addEventListener("tool", (e) => {
+      const d = JSON.parse(e.data);
+      const ok = d.result.status !== "permission_denied";
+      transcript.insertAdjacentHTML("beforeend", `
+        <details class="tool" ${ok?"":"open"}>
+          <summary>
+            <span><span class="font-mono">${esc(d.tool)}</span></span>
+            <span>${ok ? tagHTML("OK","green") : tagHTML("DENIED","red")}</span>
+          </summary>
+          <div class="tool-body">
+            <div><div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-1">Arguments</div>
+              <pre>${esc(JSON.stringify(d.input, null, 2))}</pre></div>
+            <div><div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-1">Result</div>
+              <pre>${esc(JSON.stringify(d.result, null, 2))}</pre></div>
+          </div>
+        </details>
+      `);
+    });
+    es.addEventListener("done", (e) => {
+      const d = JSON.parse(e.data);
+      status.innerHTML = `Done · ticket <span class="font-mono">${d.ticket_id}</span> · ${d.turns} turns · status: ${d.status}`;
+      es.close();
+      goBtn.disabled = false;
+    });
+    es.addEventListener("error", (e) => {
+      const txt = e.data ? JSON.parse(e.data).message : "stream error";
+      status.textContent = "error: " + txt;
+      es.close();
+      goBtn.disabled = false;
+    });
+  });
+});
+</script>
+{% endblock %}

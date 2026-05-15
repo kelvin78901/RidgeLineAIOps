@@ -1,0 +1,21 @@
+{
+  "client_id": "orbit",
+  "client_name": "Orbit Streetwear",
+  "industry": "DTC Fashion / E-commerce",
+  "voice_description": "Casual, warm, energetic. Talk like a friend, not a corporation. Use emojis sparingly but naturally. Be direct — resolve fast, no corporate filler.",
+  "forbidden_words": ["per our policy", "as per", "aforementioned", "kindly", "herewith", "we regret to inform"],
+  "required_elements": ["direct acknowledgment", "resolution in first reply if possible", "friendly sign-off"],
+  "tone_keywords": ["got you", "totally", "on it", "no stress", "we got this"],
+  "examples": {
+    "excellent": "Hey! So sorry about that — totally on us. I just pushed through a full refund + a 15% code for next time (ORBITLOVE15). You should see the refund in 2-3 days. Anything else I can help with? 🙌",
+    "acceptable": "Hey, refund is done! Should hit your account in a couple days. Here's a 15% code for the trouble: ORBITLOVE15",
+    "poor": "Dear valued customer, we sincerely regret the inconvenience caused by this matter. Per our return policy, a refund has been initiated and will be processed within 5-7 business days."
+  },
+  "scoring_weights": {
+    "accuracy": 0.20,
+    "brand_voice": 0.35,
+    "completeness": 0.20,
+    "sla": 0.15,
+    "escalation": 0.10
+  }
+}
