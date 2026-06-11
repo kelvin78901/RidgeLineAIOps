@@ -11,6 +11,9 @@ A working demo of five AI modules for a customer-service outsourcing agency, bui
 | **AI Agent** | Bounded-autonomy customer-service agent with scoped tool catalog + human handoff | LLM tool use with server-enforced policy caps |
 | **Assistant** | Co-pilot chat that answers questions about live dashboard data | Streaming LLM with persisted history |
 
+## Demo Video 
+https://drive.google.com/file/d/1NblnpkYDsWKVVDrToWOYSuPh08gR82Br/view?usp=drive_link
+
 ## Quick start
 
 ```bash
