@@ -1,6 +1,6 @@
 # Ridgeline AI Ops
 
-A working demo of five AI modules for a customer-service outsourcing agency, built for a Johns Hopkins IT Consulting Practicum. Each module solves a real pain point on open-source data — no real customer data is used.
+A working demo of five AI modules for a customer-service outsourcing agency, built for a Johns Hopkins IT Consulting Practicum. Each module solves a real pain point on open-source data For Real Company.
 
 | Module | What it does | Stack |
 |---|---|---|
